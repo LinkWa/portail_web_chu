@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+
+{% block title %}Mes recherches{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Mes recherches</h1>
+        <table class="table">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Description</th>
+                <th>Validé</th>
+            </tr>
+            {% for data in datas %}
+                <tr>
+                    <td>{{ data.last_name }}</td>
+                    <td>{{ data.first_name }}</td>
+                    <td>{{ data.description }}</td>
+                    {% if data.is_valid == False %}
+                        <td style="color: red">Non validé</td>
+                    {% else %}
+                        <td style="color: green">Validé</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
