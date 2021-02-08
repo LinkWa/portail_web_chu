@@ -24,8 +24,13 @@
 
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link active" href="/recherche">Recherches</a>
+                        <a class="nav-link active" href="/recherche">Créer une recherche</a>
                     </li>
+                    {% if user.role == "investigateur" %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/liste_recherche">Mes recherches</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link active" href="/logout">Deconnection</a>
                     </li>
