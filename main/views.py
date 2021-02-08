@@ -87,4 +87,10 @@ def liste_recherche(request):
         "datas": data
     }
 
+    if request.method == "POST":
+        if "submit_valide" in request.POST:
+            temp_model = FirstFormModel.objects.get(id=request.POST.get("submit_valide"))
+            temp_model.is_valid = not temp_model.is_valid
+            temp_model.save()
+
     return render(request, "main/liste_recherche.html", context)
