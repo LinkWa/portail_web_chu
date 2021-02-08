@@ -72,8 +72,19 @@ def recherche(request):
         first_flow.run()  # On enregistre ce flow et on l'execute
 
         return HttpResponseRedirect("/")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
+        # TODO Rediriger ailleurs et utilisé les urls django au lieu du chemin relatif
 
     else:
         first_form = FirstForm()  # On créer un formulaire vide
 
     return render(request, "main/recherche.html", {"form": first_form})
+
+
+def liste_recherche(request):
+    data = FirstFormModel.objects.all()
+
+    context = {
+        "datas": data
+    }
+
+    return render(request, "main/liste_recherche.html", context)
