@@ -8,7 +8,9 @@ class FirstFormModel(models.Model):
     last_name = models.CharField(max_length=50)
     description = models.TextField()
     is_valid = models.BooleanField(default=False)
-    commentaire = models.TextField()
 
     def __str__(self):
         return self.last_name + " " + self.first_name + " - " + self.description
+
+class CommentaireFormModel(models.Models):
+    commentaire = models.TextField()

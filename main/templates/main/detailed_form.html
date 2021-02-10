@@ -17,12 +17,7 @@
             {% else %}
                 <p style="color: red">Non validé</p>
             {% endif %}
-
-            {% if user.role == "chef_projet" %}
-                    <textarea id="commentaire" rows="5" cols="177">Commentaire</textarea>
-            {% elif user.role == "investigateur" %}
-                    <textarea id="commentaire" rows="5" cols="177" disabled >Commentaire</textarea>
-            {% endif %}
+            <textarea id="commentaire" rows="5" cols="177" disabled >Commentaire</textarea>
 
         </div>
         <div class="row">
