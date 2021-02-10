@@ -6,6 +6,8 @@ from prefect import Flow, task
 from .forms import FirstForm
 from .models import FirstFormModel
 
+from django import forms
+
 """
 Cette tache sert a vérifier que les champs du formulaire sont bien remplis de manière logique.
 Elle sert aussi à créer un model formulaire qui reprend les informations saisies dans ce dernier.
@@ -94,3 +96,17 @@ def liste_recherche(request):
             temp_model.save()
 
     return render(request, "main/liste_recherche.html", context)
+
+def commentaires(request):
+    first_form = FirstForm(request.POST)  # On récupère les données en POST
+
+    if request.method == "POST":
+        if "acces_commentaire" in request.POST:
+            temp_model = FirstFormModel.objects.get(id=request.POST.get("acces_commentaire"))
+            temp_model.save()
+            first_form = FirstForm(request.POST)  # On récupère les données en POST
+
+    return render(request, "main/recherche.html", {"form": first_form})
+
+def champCommentaire(first_form):
+    commentaire = forms.CharField(label="Commentaire", widget=forms.Textarea)
