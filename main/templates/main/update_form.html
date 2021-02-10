@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_filters %}
+{% block title %}Edition de recherche{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Edition : </h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success mt-4">Valider</button>
+        </form>
+        <a href="{% url "liste_recherche" %}" class="btn btn-primary mt-4"> < Retour</a>
+    </div>
+{% endblock %}

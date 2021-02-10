@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 # Prefect
-from prefect import Flow, task
+from prefect import task
 
 from .forms import FirstForm
 from .models import FirstFormModel
@@ -59,7 +59,7 @@ Prend en paramètre un objet django request qui permet de connaitre l'état d'un
 Renvoie la page du formulaire
 """
 
-
+"""
 def recherche(request):
     if request.method == "POST":  # Si le formulaire est déja créer on rentre là dedans
         first_form = FirstForm(request.POST)  # On récupère les données en POST
@@ -71,13 +71,29 @@ def recherche(request):
         first_flow.register(project_name="test")
         first_flow.run()  # On enregistre ce flow et on l'execute
 
-        return HttpResponseRedirect("/")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
-        # TODO Rediriger ailleurs et utilisé les urls django au lieu du chemin relatif
+        return HttpResponseRedirect(
+            "/liste_recherche")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
 
     else:
         first_form = FirstForm()  # On créer un formulaire vide
 
     return render(request, "main/recherche.html", {"form": first_form})
+"""
+
+
+def recherche(request):
+    if request.method == "POST":
+        first_formz = FirstForm(request.POST)
+
+        if first_formz.is_valid():
+            first_formz.save()
+            return HttpResponseRedirect(
+                "/liste_recherche")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
+
+    else:
+        first_formz = FirstForm()
+
+    return render(request, "main/recherche.html", {"form": first_formz})
 
 
 def liste_recherche(request):
@@ -94,3 +110,44 @@ def liste_recherche(request):
             temp_model.save()
 
     return render(request, "main/liste_recherche.html", context)
+
+
+# Modifier la recherche
+def update_form(request, first_form_id):
+    id_form = int(first_form_id)
+    form_instance = FirstFormModel.objects.get(id=id_form)
+
+    if request.method == "POST":
+        form = FirstForm(instance=form_instance, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/liste_recherche")
+    else:
+        form = FirstForm(instance=form_instance)
+    return render(request, "main/update_form.html", {"form": form})
+
+
+# Supprimer la recherche
+def delete_form(request, first_form_id):
+    first_form_id = int(first_form_id)
+    try:
+        selected_first_form = FirstFormModel.objects.get(id=first_form_id)
+    except FirstFormModel.DoesNotExist:
+        return HttpResponseRedirect("/liste_recherche")
+    selected_first_form.delete()
+    return HttpResponseRedirect("/")
+
+
+# Vue détaillé de la recherche
+def detailed_recherche(request, first_form_id):
+    first_form_id = int(first_form_id)
+    try:
+        selected_first_form = FirstFormModel.objects.get(id=first_form_id)
+    except FirstFormModel.DoesNotExist:
+        return HttpResponseRedirect("/liste_recherche")
+
+    context = {
+        "data": selected_first_form
+    }
+
+    return render(request, "main/detailed_form.html", context)

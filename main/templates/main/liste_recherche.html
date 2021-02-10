@@ -13,6 +13,7 @@
                         <th>Prénom</th>
                         <th>Description</th>
                         <th>Validé</th>
+                        <th>Actions</th>
                     </tr>
                     {% for data in datas %}
                         <tr>
@@ -24,6 +25,7 @@
                             {% else %}
                                 <td style="color: green">Validé</td>
                             {% endif %}
+                            <td><a href="/detailed_form/{{ data.id }}" class="btn btn-primary" id="{{ data.id }}">Détail</a><a href="/update_form/{{ data.id }}" class="btn btn-warning" id="{{ data.id }}" style="margin-left: 5%">Editer</a><a href="/delete_form/{{ data.id }}" class="btn btn-danger" style="margin-left: 5%" onclick="return confirm('Êtes vous sur de vouloir supprimer cette recherche ?')">Supprimer</a></td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -35,7 +37,7 @@
                         <th>Prénom</th>
                         <th>Description</th>
                         <th>Validé</th>
-                        <th>Validation</th>
+                        <th>Actions</th>
                     </tr>
                     {% for data in datas %}
                         <tr>
@@ -44,10 +46,10 @@
                             <td>{{ data.description }}</td>
                             {% if data.is_valid == False %}
                                 <td style="color: red">Non validé</td>
-                                <td><form action="" method="post">{% csrf_token %}<button name="submit_valide" class="btn btn-success" type="submit" value="{{ data.id }}">Valider</button></form></td>
+                                <td><form action="" method="post"><a href="/detailed_form/{{ data.id }}" class="btn btn-primary" id="{{ data.id }}" style="margin-right: 5%">Détail</a>{% csrf_token %}<button name="submit_valide" class="btn btn-success" type="submit" value="{{ data.id }}">Valider</button></form></td>
                             {% else %}
                                 <td style="color: green">Validé</td>
-                                <td><form action="" method="post">{% csrf_token %}<button name="submit_valide" class="btn btn-danger" type="submit" value="{{ data.id }}">Enlever</button></form></td>
+                                <td><form action="" method="post"><a href="/detailed_form/{{ data.id }}" class="btn btn-primary" id="{{ data.id }}" style="margin-right: 5%">Détail</a>{% csrf_token %}<button name="submit_valide" class="btn btn-danger" type="submit" value="{{ data.id }}">Enlever</button></form></td>
                             {% endif %}
                         </tr>
                     {% endfor %}
