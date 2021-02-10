@@ -3,8 +3,8 @@ from django.shortcuts import render
 # Prefect
 from prefect import task
 
-from .forms import FirstForm
-from .models import FirstFormModel
+from .forms import FirstForm, CommentForm
+from .models import FirstFormModel, Comment
 
 """
 Cette tache sert a vérifier que les champs du formulaire sont bien remplis de manière logique.
@@ -141,13 +141,25 @@ def delete_form(request, first_form_id):
 # Vue détaillé de la recherche
 def detailed_recherche(request, first_form_id):
     first_form_id = int(first_form_id)
+
     try:
         selected_first_form = FirstFormModel.objects.get(id=first_form_id)
     except FirstFormModel.DoesNotExist:
         return HttpResponseRedirect("/liste_recherche")
 
-    context = {
-        "data": selected_first_form
-    }
+    comments = Comment.objects.filter(id_recherche=first_form_id)
 
+    comment = Comment(id_recherche=first_form_id, username_writer=request.user.username, role_writer=request.user.role)
+
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST, instance=comment)
+        comment_form.save()
+    else:
+        comment_form = CommentForm(instance=None) # TODO Fix le texte qui reste dans la textarea
+
+    context = {
+        "data": selected_first_form,
+        "comments": comments,
+        "comment_form": comment_form
+    }
     return render(request, "main/detailed_form.html", context)
