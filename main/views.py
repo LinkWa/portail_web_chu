@@ -151,3 +151,6 @@ def detailed_recherche(request, first_form_id):
     }
 
     return render(request, "main/detailed_form.html", context)
+
+def commentaire(request):
+    return render(request, "main/commentaire_form.html")

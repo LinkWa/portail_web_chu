@@ -51,6 +51,8 @@
                                 <td style="color: green">Validé</td>
                                 <td><form action="" method="post"><a href="/detailed_form/{{ data.id }}" class="btn btn-primary" id="{{ data.id }}" style="margin-right: 5%">Détail</a>{% csrf_token %}<button name="submit_valide" class="btn btn-danger" type="submit" value="{{ data.id }}">Enlever</button></form></td>
                             {% endif %}
+                            <td><form action="" method="post"><a href="/commentaire_form/{{ data.id }}" class="btn btn-primary" id="{{ data.id }}" style="margin-right: 5%">Commentaire</a></td>
+
                         </tr>
                     {% endfor %}
                 </table>

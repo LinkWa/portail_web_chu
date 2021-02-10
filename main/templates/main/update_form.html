@@ -8,6 +8,7 @@
         <form action="" method="post">
             {% csrf_token %}
             {{ form|crispy }}
+            <textarea id="commentaire" rows="5" cols="177" disabled >Commentaire</textarea>
             <button type="submit" class="btn btn-success mt-4">Valider</button>
         </form>
         <a href="{% url "liste_recherche" %}" class="btn btn-primary mt-4"> < Retour</a>

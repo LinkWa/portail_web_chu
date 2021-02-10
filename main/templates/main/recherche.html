@@ -6,7 +6,7 @@
 
 {% block content %}
 
-
+    {% if user.role == "investigateur" %}
     <div class="container">
         <h1 class="mt-4">Premier formulaire :</h1>
         <form method="post" action="#">
@@ -15,6 +15,6 @@
             <button type="submit" class="btn btn-success mt-4" name="valide"> Valider</button>
         </form>
     </div>
-
+    {% endif %}
 
 {% endblock %}
