@@ -29,6 +29,9 @@
                     <blockquote class="blockquote mb-0">
                         <p>{{ comment.message }}</p>
                         <footer class="blockquote-footer">Date création : {{ comment.date_comment|date:"d / m / Y H:i" }}>
+                            {% if comment.username_writer == user.username %}
+                                <a href="/delete_comment/{{ comment.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes vous sur de vouloir supprimer ce commentaire ?')">Supprimer</a>
+                            {% endif %}
                         </footer>
                     </blockquote>
                 </div>
