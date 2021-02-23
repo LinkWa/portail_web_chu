@@ -59,27 +59,6 @@ Prend en paramètre un objet django request qui permet de connaitre l'état d'un
 Renvoie la page du formulaire
 """
 
-"""
-def recherche(request):
-    if request.method == "POST":  # Si le formulaire est déja créer on rentre là dedans
-        first_form = FirstForm(request.POST)  # On récupère les données en POST
-
-        with Flow("Verif and save") as first_flow:  # On créer le flow de sauvegarde du formulaire
-            form = verif_form(first_form)
-            save_form(form)  # On voit que le flow est composé de deux taches
-
-        first_flow.register(project_name="test")
-        first_flow.run()  # On enregistre ce flow et on l'execute
-
-        return HttpResponseRedirect(
-            "/liste_recherche")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
-
-    else:
-        first_form = FirstForm()  # On créer un formulaire vide
-
-    return render(request, "main/recherche.html", {"form": first_form})
-"""
-
 
 def recherche(request):
     if request.method == "POST":
