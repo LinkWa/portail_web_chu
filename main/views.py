@@ -132,9 +132,11 @@ def delete_form(request, first_form_id):  # TODO Supprimer aussi les commentaire
     first_form_id = int(first_form_id)
     try:
         selected_first_form = FirstFormModel.objects.get(id=first_form_id)
+        comments = Comment.objects.filter(id_recherche=selected_first_form.id)
     except FirstFormModel.DoesNotExist:
         return HttpResponseRedirect("/liste_recherche")
     selected_first_form.delete()
+    comments.delete()
     return HttpResponseRedirect("/")
 
 
