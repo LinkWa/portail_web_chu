@@ -4,13 +4,17 @@ from django.db import models
 
 # Create your models here.
 class FirstFormModel(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    description = models.TextField()
-    is_valid = models.BooleanField(default=False)
+    first_name = models.CharField("Prénom", max_length=50)
+    last_name = models.CharField("Nom", max_length=50)
+    description = models.TextField("Description")
+    is_valid = models.BooleanField("Validation", default=False)
 
     def __str__(self):
         return self.last_name + " " + self.first_name + " - " + self.description
+
+    def __iter__(self):
+        for field in self._meta.fields:
+            yield field.verbose_name.title(), field.value_to_string(self)
 
 
 class Comment(models.Model):

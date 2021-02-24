@@ -1,5 +1,7 @@
+from django.http import HttpResponseRedirect
 from fpdf import FPDF
-from django.http import FileResponse
+
+from main.models import FirstFormModel
 
 """
 Redéfinition du header et du footer 
@@ -29,12 +31,32 @@ class PDF(FPDF):
         self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
 
 
+"""
+Permet de modifier la valeur de is_valid pour un string
+Sinon renvoi la valeur en string
+"""
+
+
+def handle_value(value):
+    if value == "True":
+        return "Validé"
+    elif value == "False":
+        return "Non validé"
+    else:
+        return value
+
+
 def create_report(request, recherche_id):
+    try:
+        recherche = FirstFormModel.objects.get(id=recherche_id)
+    except FirstFormModel.DoesNotExist:
+        return HttpResponseRedirect("/liste_recherche")
+
     pdf = PDF()
     pdf.add_page()
-    pdf.set_font('Times', '', 12)
-    for i in range(1, 41):
-        pdf.cell(50, 10, 'TEST' + str(i), 0, 1, "C")
-    pdf.output('test1.pdf')
+    pdf.set_font('Times', 'B', 12)
+    for key, value in recherche:
+        pdf.cell(200, 10, str(key) + ": " + handle_value(value), 0, 1, "C")
+    pdf.output('Recherche_' + str(recherche.id) + '.pdf')
 
-    return FileResponse(open("/portail_web_chu/test1.pdf"), "rb")
+    return HttpResponseRedirect("/")  # TODO Changer la direction
