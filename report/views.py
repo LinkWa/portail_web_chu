@@ -57,6 +57,6 @@ def create_report(request, recherche_id):
     pdf.set_font('Times', 'B', 12)
     for key, value in recherche:
         pdf.cell(200, 10, str(key) + ": " + handle_value(value), 0, 1, "C")
-    pdf.output('Recherche_' + str(recherche.id) + '.pdf')
+    pdf.output('tempPDF/Recherche_' + str(recherche.id) + '.pdf')
 
     return HttpResponseRedirect("/")  # TODO Changer la direction
