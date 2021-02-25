@@ -1,3 +1,4 @@
+from django.http import FileResponse, Http404
 from django.http import HttpResponseRedirect
 from fpdf import FPDF
 
@@ -57,6 +58,10 @@ def create_report(request, recherche_id):
     pdf.set_font('Times', 'B', 12)
     for key, value in recherche:
         pdf.cell(200, 10, str(key) + ": " + handle_value(value), 0, 1, "C")
-    pdf.output('tempPDF/Recherche_' + str(recherche.id) + '.pdf')
+    pdf.output("tempPDF/Recherche_" + str(recherche.id) + ".pdf")
 
-    return HttpResponseRedirect("/")  # TODO Changer la direction
+    try:
+        return FileResponse(open("tempPDF/Recherche_" + str(recherche.id) + ".pdf", "rb"),
+                            content_type="application/pdf")
+    except FileNotFoundError:
+        raise Http404()
