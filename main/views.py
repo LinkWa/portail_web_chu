@@ -14,7 +14,6 @@ Elle prend en paramètre un formulaire.
 Elle retourne le model prèt à etre envoyé en BDD.
 """
 
-
 @task()
 def verif_form(first_form):
     if first_form.is_valid():
