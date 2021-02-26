@@ -27,3 +27,7 @@ Portail Web pour la recherche : CHU de Limoges
 4. Prefect : Moteur de workflow
 
    pip install prefect
+
+5. fpdf2 : Générateur de pdf
+
+   pip install fpdf2
