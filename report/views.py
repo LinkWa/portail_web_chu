@@ -2,7 +2,7 @@ from django.http import FileResponse, Http404
 from django.http import HttpResponseRedirect
 from fpdf import FPDF
 
-from main.models import FirstFormModel
+from main.models import Recherche
 
 """
 Redéfinition du header et du footer 
@@ -49,8 +49,8 @@ def handle_value(value):
 
 def create_report(request, recherche_id):
     try:
-        recherche = FirstFormModel.objects.get(id=recherche_id)
-    except FirstFormModel.DoesNotExist:
+        recherche = Recherche.objects.get(id=recherche_id)
+    except Recherche.DoesNotExist:
         return HttpResponseRedirect("/liste_recherche")
 
     pdf = PDF()
