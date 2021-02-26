@@ -8,10 +8,17 @@
 
 
     <div class="container">
-        <h1 class="mt-4">Premier formulaire :</h1>
+        <h1 class="mt-4">Formulaire de la recherche clinique</h1>
         <form method="post" action="#">
+            <h4 class="mt-4">Etape 1 : Initialisation du projet</h4>
             {% csrf_token %}
             {{ form|crispy }}
+            <h4 class="mt-4">Etape 2 : details du projet</h4>
+            <h4 class="mt-4">Etape 3 : Analyse & referencement</h4>
+            <h4 class="mt-4">Etape 4 : Les données</h4>
+            <h4 class="mt-4">Etape 5 : Conservation & transfert des données</h4>
+            <h4 class="mt-4">Etape 6 : Finalisation</h4>
+
             <button type="submit" class="btn btn-success mt-4" name="valide"> Valider</button>
         </form>
     </div>
