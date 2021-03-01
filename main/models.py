@@ -7,14 +7,17 @@ class Recherche(models.Model):
     last_name = models.CharField("Nom", max_length=50)
     description = models.TextField("Description")
     is_valid = models.BooleanField("Validation", default=False)
-    linked_id_user = models.PositiveIntegerField(default=0)
+    linked_id_user = models.PositiveIntegerField("linked_id_user", default=0)
 
     def __str__(self):
         return self.last_name + " " + self.first_name + " - " + self.description
 
     def __iter__(self):
         for field in self._meta.fields:
-            yield field.verbose_name.title(), field.value_to_string(self)
+            if field.verbose_name == "linked_id_user":
+                pass
+            else:
+                yield field.verbose_name.title(), field.value_to_string(self)
 
 
 class Comment(models.Model):
