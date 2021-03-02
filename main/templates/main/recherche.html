@@ -8,12 +8,15 @@
 
 
     <div class="container">
-        <h1 class="mt-4">Premier formulaire :</h1>
+        <h1 class="mt-4" id="up_page">Premier formulaire :</h1>
         <form method="post" action="#">
             {% csrf_token %}
             {{ form|crispy }}
             <button type="submit" class="btn btn-success mt-4" name="valide"> Valider</button>
         </form>
+        <div class="row">
+            <a href="#up_page" class="btn btn-primary mt-4">Revenir en haut de la page</a>
+        </div>
     </div>
 
 

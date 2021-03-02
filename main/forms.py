@@ -1,13 +1,26 @@
 from django.forms import ModelForm
-
+from django import forms
 from main.models import Recherche, Comment
 
 
 class RechercheForm(ModelForm):
     class Meta:
         model = Recherche
-        fields = ["first_name", "last_name", "description"]
-        labels = {"first_name": "Prénom", "last_name": "Nom", "description": "Description"}
+        exclude = ["id", "linked_id_user", "is_valid"]
+        widgets = {
+            'date_but_proj': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={'class': 'form-control',
+                       'placeholder': 'Select a date',
+                       'type': 'date'
+                       }),
+            'date_publ_proj': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={'class': 'form-control',
+                       'placeholder': 'Select a date',
+                       'type': 'date'
+                       }),
+        }
 
 
 class CommentForm(ModelForm):
