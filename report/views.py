@@ -55,12 +55,14 @@ def create_report(request, recherche_id):
 
     pdf = PDF()
     pdf.add_page()
-    pdf.set_font('Times', 'B', 12)
     for key, value in recherche:
         if key == "Id":
             pass
         else:
-            pdf.cell(200, 10, str(key) + ": " + handle_value(value), 0, 1, "C")
+            pdf.set_font('Times', 'B', 12)
+            pdf.cell(200, 10, str(key) + " :", 0, 1, "L")
+            pdf.set_font("Times", "", 10)
+            pdf.cell(200, 20, handle_value(value), 0, 1, "L")
     pdf.output("tempPDF/Recherche_" + str(recherche.id) + ".pdf")
 
     try:

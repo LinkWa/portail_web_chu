@@ -6,10 +6,10 @@
     <div class="container mt-4">
         {% for key, value in data %}
             <div class="row">
-                {% if key == "Validation" and value %}
+                {% if key == "Validation" and value == "True" %}
                     <h4>{{ key }} : </h4>
                     <p style="color: green">Validé</p>
-                {% elif key == "Validation" and not value %}
+                {% elif key == "Validation" and value == "False" %}
                     <h4>{{ key }} : </h4>
                     <p style="color: red">Non Validé</p>
                 {% elif key != "Id" %}
