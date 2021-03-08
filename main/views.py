@@ -138,6 +138,7 @@ def detailed_recherche(request, first_form_id):
     if request.method == "POST":
         comment_form = CommentForm(request.POST, instance=comment)
         comment_form.save()
+        return HttpResponseRedirect("/detailed_form/" + str(first_form_id))
     else:
         comment_form = CommentForm(instance=None)  # TODO Fix le texte qui reste dans la textarea
 
