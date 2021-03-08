@@ -23,9 +23,15 @@
                 </li>
 
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url "recherche" %}">Créer une recherche</a>
-                    </li>
+                    {% if user.role == "investigateur" %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url "recherche" %}">Créer une recherche</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url "classification" %}">Questionnaire de classification</a>
+                        </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link active" href="{% url "liste_recherche" %}">Recherches</a>
                     </li>

@@ -31,3 +31,7 @@ Portail Web pour la recherche : CHU de Limoges
 5. fpdf2 : Générateur de pdf
 
    pip install fpdf2
+
+6. formtools : Utilitaire pour les formulaires
+
+   pip install django-formtools
