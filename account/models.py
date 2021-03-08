@@ -47,6 +47,9 @@ class AccountManager(BaseUserManager):
     def has_module_perms(self, app_label):
         return True
 
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="Email", max_length=70, unique=True)
@@ -76,3 +79,6 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
