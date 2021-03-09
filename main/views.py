@@ -1,9 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from formtools.wizard.views import SessionWizardView
 # Prefect
 from prefect import task
 
-from .forms import RechercheForm, CommentForm
+from .forms import *
 from .models import Recherche, Comment
 
 """
@@ -161,3 +162,14 @@ def delete_comment(request, comment_id):
     selected_comment.delete()
 
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
+
+
+# Formulaires de classification
+class ClassificationWizard(SessionWizardView):
+    template_name = "main/classification.html"
+    form_list = [CQuestion1, CQuestion2, CQuestion3, CQuestion4, CQuestion5, CQuestion6, CQuestion7, CQuestion8]
+
+    def done(self, form_list, **kwargs):
+        return render(self.request, 'main/classification.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })

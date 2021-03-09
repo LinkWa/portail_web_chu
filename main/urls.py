@@ -1,6 +1,7 @@
 # Our main app urls
 
 from django.urls import path
+from main.views import ClassificationWizard
 
 from . import views
 
@@ -11,5 +12,6 @@ urlpatterns = [
     path("delete_form/<int:first_form_id>", views.delete_form, name="delete_form"),
     path("update_form/<int:first_form_id>", views.update_form, name="update_form"),
     path("detailed_form/<int:first_form_id>", views.detailed_recherche, name="detailed_form"),
-    path("delete_comment/<int:comment_id>", views.delete_comment, name="delete_comment")
+    path("delete_comment/<int:comment_id>", views.delete_comment, name="delete_comment"),
+    path("classification/", ClassificationWizard.as_view(), name="classification")
 ]
