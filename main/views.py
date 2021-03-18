@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from formtools.wizard.views import SessionWizardView
 # Prefect
 from prefect import task
 
-from .forms import FirstForm, CommentForm
-from .models import FirstFormModel, Comment
+from .forms import *
+from .models import Recherche, Comment
 
 """
 Cette tache sert a vérifier que les champs du formulaire sont bien remplis de manière logique.
@@ -22,8 +23,8 @@ def verif_form(first_form):
         last_name = first_form.cleaned_data["lastname"]
         description = first_form.cleaned_data["description"]  # Permet de rendre le formulaire "propre"
 
-        f = FirstFormModel(first_name=first_name, last_name=last_name,
-                           description=description)  # Créer le model du formulaire à envoyer en BDD
+        f = Recherche(first_name=first_name, last_name=last_name,
+                      description=description)  # Créer le model du formulaire à envoyer en BDD
         return f
 
 
@@ -62,21 +63,24 @@ Renvoie la page du formulaire
 
 def recherche(request):
     if request.method == "POST":
-        first_formz = FirstForm(request.POST)
+        recherche_form = RechercheForm(request.POST)
 
-        if first_formz.is_valid():
-            first_formz.save()
+        if recherche_form.is_valid():
+            recherche_instance = recherche_form.instance
+            recherche_instance.linked_id_user = request.user.id
+            recherche_instance.save()
+
             return HttpResponseRedirect(
                 "/liste_recherche")  # Quand le formulaire est envoyé on redirige vers la page d'acceuil
 
     else:
-        first_formz = FirstForm()
+        recherche_form = RechercheForm()
 
-    return render(request, "main/recherche.html", {"form": first_formz})
+    return render(request, "main/recherche.html", {"form": recherche_form})
 
 
 def liste_recherche(request):
-    data = FirstFormModel.objects.all()
+    data = Recherche.objects.all()
 
     context = {
         "datas": data
@@ -84,7 +88,7 @@ def liste_recherche(request):
 
     if request.method == "POST":
         if "submit_valide" in request.POST:
-            temp_model = FirstFormModel.objects.get(id=request.POST.get("submit_valide"))
+            temp_model = Recherche.objects.get(id=request.POST.get("submit_valide"))
             temp_model.is_valid = not temp_model.is_valid
             temp_model.save()
 
@@ -94,15 +98,15 @@ def liste_recherche(request):
 # Modifier la recherche
 def update_form(request, first_form_id):
     id_form = int(first_form_id)
-    form_instance = FirstFormModel.objects.get(id=id_form)
+    form_instance = Recherche.objects.get(id=id_form)
 
     if request.method == "POST":
-        form = FirstForm(instance=form_instance, data=request.POST)
+        form = RechercheForm(instance=form_instance, data=request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/liste_recherche")
     else:
-        form = FirstForm(instance=form_instance)
+        form = RechercheForm(instance=form_instance)
     return render(request, "main/update_form.html", {"form": form})
 
 
@@ -110,9 +114,9 @@ def update_form(request, first_form_id):
 def delete_form(request, first_form_id):  # TODO Supprimer aussi les commentaires associés
     first_form_id = int(first_form_id)
     try:
-        selected_first_form = FirstFormModel.objects.get(id=first_form_id)
+        selected_first_form = Recherche.objects.get(id=first_form_id)
         comments = Comment.objects.filter(id_recherche=selected_first_form.id)
-    except FirstFormModel.DoesNotExist:
+    except Recherche.DoesNotExist:
         return HttpResponseRedirect("/liste_recherche")
     selected_first_form.delete()
     comments.delete()
@@ -124,8 +128,8 @@ def detailed_recherche(request, first_form_id):
     first_form_id = int(first_form_id)
 
     try:
-        selected_first_form = FirstFormModel.objects.get(id=first_form_id)
-    except FirstFormModel.DoesNotExist:
+        selected_first_form = Recherche.objects.get(id=first_form_id)
+    except Recherche.DoesNotExist:
         return HttpResponseRedirect("/liste_recherche")
 
     comments = Comment.objects.filter(id_recherche=first_form_id)
@@ -135,6 +139,7 @@ def detailed_recherche(request, first_form_id):
     if request.method == "POST":
         comment_form = CommentForm(request.POST, instance=comment)
         comment_form.save()
+        return HttpResponseRedirect("/detailed_form/" + str(first_form_id))
     else:
         comment_form = CommentForm(instance=None)  # TODO Fix le texte qui reste dans la textarea
 
@@ -157,3 +162,28 @@ def delete_comment(request, comment_id):
     selected_comment.delete()
 
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
+
+
+# Accés à Fobi
+def fobi_dashboard(request):
+    return render(request, "main/fobi_dashboard.html")
+
+
+# Formulaires de classification
+class ClassificationWizard(SessionWizardView):
+    template_name = "main/classification.html"
+
+    def done(self, form_list, **kwargs):
+        return render(self.request, 'main/classification.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })
+
+    @staticmethod
+    def get_skip_questions(wizard):
+        cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
+        if cleaned_data.get("question_2") == "F":
+            return {'2': False, '3': False, '4': False, '5': False, '6': False, '7': False,
+                    '8': False, '9': False, '10': False, '11': False, '12': False, '13': False,
+                    '14': False, '15': False, '16': False}
+        else:
+            return {}

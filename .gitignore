@@ -117,4 +117,7 @@ media/
 .idea
 .idea/
 
-/tempPDF
+tempPDF/*
+
+# Keep the folder
+!tempPDF/.gitkeep

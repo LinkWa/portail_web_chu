@@ -4,21 +4,22 @@
 
 {% block content %}
     <div class="container mt-4">
-        <div class="row">
-            <h2>{{ data.last_name }} {{ data.first_name }}</h2>
-        </div>
-        <div class="row">
-            <h4>Description : </h4>
-            <p>{{ data.description }}</p>
-        </div>
-        <div class="row">
-            <h4>Validation : </h4>
-            {% if data.is_valid %}
-                <p style="color: green">Validé</p>
-            {% else %}
-                <p style="color: red">Non validé</p>
-            {% endif %}
-        </div>
+        {% for key, value in data %}
+            <div class="row">
+                {% if key == "Validation" and value == "True" %}
+                    <h4>{{ key }} : </h4>
+                    <p style="color: green">Validé</p>
+                {% elif key == "Validation" and value == "False" %}
+                    <h4>{{ key }} : </h4>
+                    <p style="color: red">Non Validé</p>
+                {% elif key != "Id" %}
+                    <h4>{{ key }} : </h4>
+                    <p>{{ value }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
         <div class="row mt-4">
             <a href="/report/{{ data.id }}" class="btn btn-danger bt-sm">Générer en pdf</a>
         </div>
