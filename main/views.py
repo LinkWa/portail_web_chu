@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from fobi.models import FormEntry
 from formtools.wizard.views import SessionWizardView
 # Prefect
 from prefect import task
@@ -164,12 +165,30 @@ def delete_comment(request, comment_id):
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
 
 
+# Accés à Fobi
+def fobi_dashboard(request):
+    form_entries = FormEntry._default_manager \
+        .filter(user__pk=request.user.pk) \
+        .select_related('user')
+    context = {"form_entries": form_entries}
+    return render(request, "main/fobi_dashboard.html", context)
+
+
 # Formulaires de classification
 class ClassificationWizard(SessionWizardView):
     template_name = "main/classification.html"
-    form_list = [CQuestion1, CQuestion2, CQuestion3, CQuestion4, CQuestion5, CQuestion6, CQuestion7, CQuestion8]
 
     def done(self, form_list, **kwargs):
         return render(self.request, 'main/classification.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
+
+    @staticmethod
+    def get_skip_questions(wizard):
+        cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
+        if cleaned_data.get("question_2") == "F":
+            return {'2': False, '3': False, '4': False, '5': False, '6': False, '7': False,
+                    '8': False, '9': False, '10': False, '11': False, '12': False, '13': False,
+                    '14': False, '15': False, '16': False}
+        else:
+            return {}
