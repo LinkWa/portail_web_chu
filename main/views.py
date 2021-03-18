@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from fobi.models import FormEntry
 from formtools.wizard.views import SessionWizardView
 # Prefect
 from prefect import task
@@ -166,7 +167,11 @@ def delete_comment(request, comment_id):
 
 # Accés à Fobi
 def fobi_dashboard(request):
-    return render(request, "main/fobi_dashboard.html")
+    form_entries = FormEntry._default_manager \
+        .filter(user__pk=request.user.pk) \
+        .select_related('user')
+    context = {"form_entries": form_entries}
+    return render(request, "main/fobi_dashboard.html", context)
 
 
 # Formulaires de classification

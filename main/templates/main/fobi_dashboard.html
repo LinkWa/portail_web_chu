@@ -25,10 +25,10 @@
                         <thead>
                         <tr>
                             <th class="col-sm-3">Formulaires</th>
-                            <th class="col-sm-1">{% trans "Is public" %}</th>
-                            <th class="col-sm-1">{% trans "Is active" %}</th>
+                            {# <th class="col-sm-1">Public</th> #}
+                            {# <th class="col-sm-1">Actif</th> #}
                             {#<th class="col-sm-1">{% trans "Is cloneable" %}</th>#}
-                            <th class="col-sm-3">{% trans "Actions" %}</th>
+                            <th class="col-sm-3">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,29 +36,37 @@
                             {% for form_entry in form_entries %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'fobi.view_form_entry' form_entry.slug %}">{{ form_entry.name }}</a>
+                                        <a href="{% url 'fobi.view_form_entry' form_entry.slug %}"
+                                           style="text-decoration: none;">{{ form_entry.name }}</a>
                                     </td>
-                                    <td>{{ form_entry.is_public }}</td>
-                                    <td>{{ form_entry.is_active }}</td>
+                                    {# <td>{{ form_entry.is_public }}</td> #}
+                                    {# <td>{{ form_entry.is_active }}</td> #}
                                     {#<td>{{ form_entry.is_cloneable }}</td>#}
                                     <td>
-                                        <ul class="list-inline">
+                                        <ul class="list-inline btn-group">
+
                                             <li>
-                                                <a href="{% url 'fobi.edit_form_entry' form_entry.pk %}">
-                                                    <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+                                                <a href="{% url 'fobi.edit_form_entry' form_entry.pk %}"
+                                                   class="btn btn-outline-warning">
+                                                    Editer
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{% url 'fobi.delete_form_entry' form_entry.pk %}">
-                                                    <span class="glyphicon glyphicon-remove"></span> {% trans "Delete" %}
+                                                <a href="{% url 'fobi.delete_form_entry' form_entry.pk %}"
+                                                   class="btn btn-outline-danger">
+                                                    Supprimer
                                                 </a>
+                                                <!--TODO: Faire un bouton supprimer de la BDD directement -->
                                             </li>
                                             <li>
-                                                <a href="{% url 'fobi.export_form_entry' form_entry.pk %}">
-                                                    <span class="glyphicon glyphicon-export"></span> {% trans "Export" %}
+                                                <a href="{% url 'fobi.export_form_entry' form_entry.pk %}"
+                                                   class="btn btn-outline-success">
+                                                    Exporter
                                                 </a>
                                             </li>
                                         </ul>
+
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -71,7 +79,7 @@
 
         <div class="col-4 col-sm-4 col-lg-4">
             <div>
-                <h2>{% trans "Actions" %}</h2>
+                <h2>Actions</h2>
             </div>
 
             <div class="btn-group-vertical">
@@ -93,8 +101,7 @@
     </div>
 
 
-    {% block sidebar-wrapper %}
-    {% endblock sidebar-wrapper %}
+
 {% endblock %}
 </div>
 
