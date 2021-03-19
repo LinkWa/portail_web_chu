@@ -12,6 +12,15 @@
         <h1 class="text-center mt-4">Dashboard</h1>
     </div>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
     <div class="row">
         <div class="col-8 col-sm-8 col-lg-8">
             <!-- Forms -->
@@ -85,7 +94,7 @@
 
             <div class="btn-group-vertical">
                 {% block form_entry_actions %}
-                    <a href="{% url 'fobi.create_form_entry' %}" class="btn btn-primary">
+                    <a href="{% url 'create_fobi_form' %}" class="btn btn-primary">
                         Créer un formulaire
                     </a>
                     <a href="{% url 'fobi.import_form_entry' %}" class="btn btn-dark">

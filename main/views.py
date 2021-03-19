@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from fobi.models import FormEntry
@@ -179,10 +180,16 @@ def delete_fobi_form(request, id_form):
     try:
         selected_form = FormEntry.objects.get(id=id_form)
     except FormEntry.DoesNotExist:
+        messages.warning(request, "Ce formulaire n'existe pas")
         return HttpResponseRedirect("/dashboard")
     selected_form.delete()
 
+    messages.success(request, "Formulaire supprimé avec succés !")
     return HttpResponseRedirect("/dashboard")
+
+
+def create_fobi_form(request):
+    return render(request, "main/fobi_create_form.html")
 
 
 # Formulaires de classification
