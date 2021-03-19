@@ -1,0 +1,110 @@
+{% extends "main/base.html" %}
+{% include fobi_theme.base_edit_template %}
+
+{% block content %}
+    {% load i18n %}
+
+    {% block content-wrapper %}
+        <div class="container">
+        <div class="page-header">
+            <h1>{% trans "Editeur de formulaire" %}</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-9 col-sm-12 col-lg-9">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a> Formulaire </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div>
+            <h2 id="form_elements">{% trans "Add elements to your form" %}</h2>
+            <a href="/fobi/forms/elements/add/X/boolean/">Boolean</a># X = id pour les utilisateurs
+            <a href="/fobi/forms/elements/add/X/checkbox_select_multiple/">Checkbox select multiple</a>
+            <a href="/fobi/forms/elements/add/X/date/">Date</a>
+            <a href="/fobi/forms/elements/add/X/date_drop_down/">Date drop down</a>
+            <a href="/fobi/forms/elements/add/X/datetime/">DateTime</a>
+            <a href="/fobi/forms/elements/add/X/decimal/">Decimal</a>
+            <a href="/fobi/forms/elements/add/X/email/">Email</a>
+            <a href="/fobi/forms/elements/add/X/file/">File</a>
+            <a href="/fobi/forms/elements/add/X/float/">Float</a>
+            <a href="/fobi/forms/elements/add/X/hidden/">Hidden</a>
+            <a href="/fobi/forms/elements/add/X/input/">Input</a>
+            <a href="/fobi/forms/elements/add/X/integer/">Integer</a>
+            <a href="/fobi/forms/elements/add/X/ip_address/">Ip adress</a>
+            <a href="/fobi/forms/elements/add/X/null_boolean/">Null boolean</a>
+            <a href="/fobi/forms/elements/add/X/password/">Password</a>
+            <a href="/fobi/forms/elements/add/X/radio/">Radio</a>
+            <a href="/fobi/forms/elements/add/X/regex/">regex</a>
+            <a href="/fobi/forms/elements/add/X/select/">Select</a>
+            <a href="/fobi/forms/elements/add/X/select_object_model/">Select model object</a>
+            <a href="/fobi/forms/elements/add/X/select_multiple/">Select multiple</a>
+            <a href="/fobi/forms/elements/add/X/select_multiple_model_objects/">Select multiple model object</a>
+            <a href="/fobi/forms/elements/add/X/slug/">Slug</a>
+            <a href="/fobi/forms/elements/add/X/text/">Texte</a>
+            <a href="/fobi/forms/elements/add/X/textarea/">Zone de texte</a>
+            <a href="/fobi/forms/elements/add/X/time/">Heure</a>
+            <a href="/fobi/forms/elements/add/X/url/">URL</a>
+
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                {% trans "Choose form element to add" %} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for group, plugins in user_form_element_plugins.items %}
+                                    {% if not forloop.first %}
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    <li class="dropdown-header">{{ group }}</li>
+                                    {% for form_element_uid, form_element_name in plugins %}
+                                        <li>
+                                            <a href="{% url 'fobi.add_form_element_entry' form_entry.pk form_element_uid %}">{{ form_element_name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <form id="fobi-form" method="post" action="{{ request.path }}?active_tab=tab-form-elements"
+                          novalidate="novalidate"
+                          class="{% block form_elements_html_class %}form-horizontal{% endblock %}"
+                            {% block form_elements_extra_attrs %}{% endblock %}>
+                        {% csrf_token %}
+                        {% with assembled_form as form %}
+                            {% include fobi_theme.form_edit_snippet_template_name %}
+                        {% endwith %}
+
+                        {{ form_element_entry_formset.management_form }}
+
+                        {% comment %}
+              {% with form_element_entry_formset as form %}
+                {% include fobi_theme.form_edit_snippet_template_name %}
+              {% endwith %}
+              {% endcomment %}
+
+                        <div class="{% block form_elements_button_outer_wrapper_html_class %}control-group{% endblock %}">
+                            <div class="{% block form_elements_button_wrapper_html_class %}controls{% endblock %}">
+                                <input type="submit" name="ordering"
+                                       class="{% block form_elements_button_html_class %}btn btn-primary pull-right{% endblock %}"
+                                       value="{% trans 'Save ordering' %}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    {% endblock content-wrapper %}
+
+    {% block sidebar-wrapper %}
+    {% endblock sidebar-wrapper %}
+{% endblock %}

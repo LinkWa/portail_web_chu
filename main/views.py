@@ -174,6 +174,10 @@ def fobi_dashboard(request):
     return render(request, "main/fobi_dashboard.html", context)
 
 
+def fobi_createForm(request):
+    return render(request, "main/fobi_createForm.html")
+
+
 # Formulaires de classification
 class ClassificationWizard(SessionWizardView):
     template_name = "main/classification.html"

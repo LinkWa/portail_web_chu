@@ -20,5 +20,6 @@ urlpatterns = [
     path("detailed_form/<int:first_form_id>", views.detailed_recherche, name="detailed_form"),
     path("delete_comment/<int:comment_id>", views.delete_comment, name="delete_comment"),
     path("classification/", ClassificationWizard.as_view(FORM_LIST), name="classification"),
-    path("fobi_custom/", views.fobi_dashboard, name="fobi_dashboard")
+    path("fobi_custom/", views.fobi_dashboard, name="fobi_dashboard"),
+    path("fobi_custom_create/", views.fobi_createForm, name="fobi_createForm")
 ]
