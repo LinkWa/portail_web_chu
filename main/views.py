@@ -165,13 +165,24 @@ def delete_comment(request, comment_id):
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
 
 
-# Accés à Fobi
+# -------------------------FOBI---------------------------------------------
 def fobi_dashboard(request):
     form_entries = FormEntry._default_manager \
         .filter(user__pk=request.user.pk) \
         .select_related('user')
     context = {"form_entries": form_entries}
     return render(request, "main/fobi_dashboard.html", context)
+
+
+def delete_fobi_form(request, id_form):
+    id_form = int(id_form)
+    try:
+        selected_form = FormEntry.objects.get(id=id_form)
+    except FormEntry.DoesNotExist:
+        return HttpResponseRedirect("/dashboard")
+    selected_form.delete()
+
+    return HttpResponseRedirect("/dashboard")
 
 
 # Formulaires de classification

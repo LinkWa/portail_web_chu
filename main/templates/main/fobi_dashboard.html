@@ -52,8 +52,9 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{% url 'fobi.delete_form_entry' form_entry.pk %}"
-                                                   class="btn btn-outline-danger">
+                                                <a href="/dashboard/delete/{{ form_entry.id }}"
+                                                   class="btn btn-outline-danger"
+                                                   onclick="return confirm('Êtes vous sur de vouloir supprimer ce formulaire ?')">
                                                     Supprimer
                                                 </a>
                                                 <!--TODO: Faire un bouton supprimer de la BDD directement -->
