@@ -1,3 +1,4 @@
+from django import db
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
@@ -73,3 +74,28 @@ class Account(AbstractBaseUser):
 
     def has_perms(self, perm, obj=None):
         return self.is_admin
+
+
+class AccountCDP(AbstractBaseUser):
+    email = models.EmailField(verbose_name="Email", max_length=70, unique=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=80)
+    role = models.CharField(max_length=50)
+
+    # Required
+    username = models.CharField(max_length=30, unique=True)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name", "role", "username"]
+
+    objects = Account.objects.filter(role="chef_projet")
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+

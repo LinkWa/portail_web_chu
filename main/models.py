@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from account.models import Account
+
 
 class Recherche(models.Model):
     first_name = models.CharField("Prénom", max_length=50)
@@ -20,6 +22,10 @@ class Recherche(models.Model):
         choices=CHOICES,
         default='CHU Limoges - 2 avenue Martin Luther King, 87042 Limoges Cedex',
     )
+
+    '''
+   
+    '''
 
     # phase1 : initialisation
     proj_name = models.CharField("Titre complet du projet", max_length=50)  # projet titre complet
