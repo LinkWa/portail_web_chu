@@ -26,7 +26,6 @@ class Recherche(models.Model):
     data = Account.objects.filter(role='chef_projet')
     c_proj=()
     for i in data:
-        #AllCDP = {i.id:[i.last_name, i.first_name]}  dictionnaire de data
         c_proj = c_proj + (
             (i.last_name + ' ' + i.first_name, i.last_name + ' ' + i.first_name),
         )

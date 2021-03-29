@@ -80,7 +80,7 @@ def recherche(request):
 
     return render(request, "main/recherche.html", {"form": recherche_form})
 
-def liste_recherche_by_cdp(request,cdp_ass):
+def liste_recherche_by_cdp(request, cdp_ass):
     data = Recherche.objects.all(cdp_ass=cdp_ass)
 
     context = {
