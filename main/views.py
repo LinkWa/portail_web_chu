@@ -80,6 +80,21 @@ def recherche(request):
 
     return render(request, "main/recherche.html", {"form": recherche_form})
 
+def liste_recherche_by_cdp(request,cdp_ass):
+    data = Recherche.objects.all(cdp_ass=cdp_ass)
+
+    context = {
+        "datas": data
+    }
+
+    if request.method == "POST":
+        if "submit_valide" in request.POST:
+            temp_model = Recherche.objects.get(id=request.POST.get("submit_valide"))
+            temp_model.is_valid = not temp_model.is_valid
+            temp_model.save()
+
+    return render(request, "main/liste_recherche.html", context)
+
 
 def liste_recherche(request):
     data = Recherche.objects.all()

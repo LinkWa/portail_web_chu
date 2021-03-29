@@ -23,9 +23,20 @@ class Recherche(models.Model):
         default='CHU Limoges - 2 avenue Martin Luther King, 87042 Limoges Cedex',
     )
 
-    '''
-   
-    '''
+    data = Account.objects.filter(role='chef_projet')
+    c_proj=()
+    for i in data:
+        #AllCDP = {i.id:[i.last_name, i.first_name]}  dictionnaire de data
+        c_proj = (
+            (i.id, i.last_name + ' ' + i.first_name),
+        )
+
+    cdp_ass = models.CharField(
+        "Chef de projet associé",
+        max_length=70,
+        choices=c_proj,
+        default='Choisir le chef de projet associé à cette recherche...',
+    )
 
     # phase1 : initialisation
     proj_name = models.CharField("Titre complet du projet", max_length=50)  # projet titre complet
