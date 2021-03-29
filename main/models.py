@@ -27,15 +27,14 @@ class Recherche(models.Model):
     c_proj=()
     for i in data:
         #AllCDP = {i.id:[i.last_name, i.first_name]}  dictionnaire de data
-        c_proj = (
-            (i.id, i.last_name + ' ' + i.first_name),
+        c_proj = c_proj + (
+            (i.last_name + ' ' + i.first_name, i.last_name + ' ' + i.first_name),
         )
 
     cdp_ass = models.CharField(
         "Chef de projet associé",
         max_length=70,
         choices=c_proj,
-        default='Choisir le chef de projet associé à cette recherche...',
     )
 
     # phase1 : initialisation
