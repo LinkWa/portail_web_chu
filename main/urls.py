@@ -39,8 +39,4 @@ urlpatterns = [
     path("classification/",
          ClassificationWizard.as_view(FORM_LIST, condition_dict=dict_skip),
          name="classification"),
-    path("dashboard/", views.fobi_dashboard, name="dashboard"),
-    path("dashboard/delete/<int:id_form>", views.delete_fobi_form, name="delete_fobi_form"),
-    path("dashboard/create", views.create_fobi_form, name="create_fobi_form"),
-    path("view_form/<int:id_form>", views.fobi_view_form, name="fobi_view_form"),
 ]

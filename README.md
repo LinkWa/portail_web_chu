@@ -36,6 +36,4 @@ Portail Web pour la recherche : CHU de Limoges
 
    `pip install django-formtools`
 
-7. Fobi : Creationd de formulaire
-
-   `pip install django-fobi`
+~~7. Fobi : Creationd de formulaire~~

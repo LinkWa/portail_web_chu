@@ -1,7 +1,5 @@
-from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from fobi.models import FormEntry
 from formtools.wizard.views import SessionWizardView
 
 from .forms import *
@@ -119,44 +117,6 @@ def delete_comment(request, comment_id):
     selected_comment.delete()
 
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
-
-
-# -------------------------FOBI---------------------------------------------
-def fobi_dashboard(request):
-    form_entries = FormEntry._default_manager \
-        .filter(user__pk=request.user.pk) \
-        .select_related('user')
-    context = {"form_entries": form_entries}
-    return render(request, "main/fobi_dashboard.html", context)
-
-
-def delete_fobi_form(request, id_form):
-    id_form = int(id_form)
-    try:
-        selected_form = FormEntry.objects.get(id=id_form)
-    except FormEntry.DoesNotExist:
-        messages.warning(request, "Ce formulaire n'existe pas")
-        return HttpResponseRedirect("/dashboard")
-    selected_form.delete()
-
-    messages.success(request, "Formulaire supprimé avec succés !")
-    return HttpResponseRedirect("/dashboard")
-
-
-def create_fobi_form(request):
-    return render(request, "main/fobi_create_form.html")
-
-
-def fobi_view_form(request, id_form):
-    id_form = int(id_form)
-    try:
-        selected_form = FormEntry.objects.get(id=id_form)
-    except FormEntry.DoesNotExist:
-        messages.warning(request, "Ce formulaire n'existe pas")
-        return HttpResponseRedirect("/dashboard")
-
-    context = {"form": selected_form}
-    return render(request, "main/fobi_view_form.html", context)
 
 
 # Formulaires de classification
