@@ -7,6 +7,17 @@
         {% if user.is_authenticated %}
             {% if user.role == "investigateur" %}
                 <h1 class="mt-4">Mes recherches</h1>
+                <h6>
+                    <form align="right" method="post" action="">
+                        <select>
+                            <option>Tout afficher</option>
+                            <option>Filtrer par mes recherches</option>
+                            <option>Filtrer par date (Du plus recent au plus ancien)</option>
+                        </select>
+                        {% csrf_token %}
+                        <button class="btn btn-primary">Appliquer le filtre</button>
+                    </form>
+                </h6>
                 <table class="table">
                     <tr>
                         <th>Nom</th>
@@ -31,6 +42,17 @@
                 </table>
             {% elif user.role == "chef_projet" %}
                 <h1 class="mt-4">Les recherches</h1>
+                 <h6>
+                    <form align="right" method="post" action="">
+                        <select>
+                            <option>Tout afficher</option>
+                            <option>Filtrer les recherches auquel je suis associées</option>
+                            <option>Filtrer par date (Du plus recent au plus ancien)</option>
+                        </select>
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit">Appliquer le filtre</button>
+                    </form>
+                </h6>
                 <table class="table">
                     <tr>
                         <th>Nom</th>
