@@ -34,6 +34,7 @@ class Recherche(models.Model):
         "Chef de projet associé",
         max_length=70,
         choices=c_proj,
+        default=c_proj[0]
     )
 
     # phase1 : initialisation
@@ -58,7 +59,7 @@ class Recherche(models.Model):
         ('Etude multi-service', 'Etude multi-service'),
         ('Etude multicentrique', 'Etude multicentrique'),
     ]
-    etu_proj = models.CharField("Type d'Etudes", choices=etu_proj_choice, max_length=70)
+    etu_proj = models.CharField("Type d'Etudes", choices=etu_proj_choice, max_length=70, default=etu_proj_choice[0])
 
     finality_search_choice = [
         ('Biologie', 'Biologie'),
@@ -68,7 +69,7 @@ class Recherche(models.Model):
         ('Sciences sociales', 'Sciences sociales'),
         ('Autres (A preciser)', 'Autres (A preciser)'),
     ]
-    finality_search = models.CharField("Finalité de la recherche", choices=finality_search_choice, max_length=70)
+    finality_search = models.CharField("Finalité de la recherche", choices=finality_search_choice, max_length=70, default=finality_search_choice[0])
 
     other_finality_search = models.CharField("Autres finalités de la recherche", blank=True, max_length=50)
 
@@ -85,7 +86,7 @@ class Recherche(models.Model):
         ('Autres (A preciser)', 'Autres (A preciser)'),
     ]
     type_search = models.CharField("Type de recherche/Objectif/Intérêt pour la santé publique",
-                                   choices=type_search_choice, max_length=70)
+                                   choices=type_search_choice, max_length=70, default=type_search_choice[0])
 
     other_type_search = models.TextField("Autres type de recherche", blank=True)
 
