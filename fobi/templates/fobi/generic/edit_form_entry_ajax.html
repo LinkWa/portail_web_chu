@@ -1,6 +1,6 @@
 {% load i18n fobi_tags %}
 <div class="page-header">
-    <h1>{% trans "Edit form" %}</h1>
+    <h1>Modifier le formulaire</h1>
 </div>
 
 <div class="row">
@@ -20,7 +20,7 @@
             <div class="tab-pane active" id="tab-form-elements">
 
                 <div>
-                    <h2 id="form_elements">Ajouter un champ au formulaire  </h2>
+                    <h2 id="form_elements">Ajouter un champ au formulaire </h2>
                 </div>
 
                 <div class="panel panel-default">
@@ -40,7 +40,8 @@
                                         <li class="dropdown-header">{{ group }}</li>
                                         {% for form_element_uid, form_element_name in plugins %}
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'fobi.add_form_element_entry' form_entry.pk form_element_uid %}">{{ form_element_name }}</a>
+                                                <a class="dropdown-item"
+                                                   href="{% url 'fobi.add_form_element_entry' form_entry.pk form_element_uid %}">{{ form_element_name }}</a>
                                             </li>
                                         {% endfor %}
                                     {% endfor %}
@@ -105,16 +106,16 @@
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                    {% trans "Choose form handler to add" %} <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for form_handler_uid, form_handler_name in user_form_handler_plugins %}
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="{% url 'fobi.add_form_handler_entry' form_entry.pk form_handler_uid %}">{{ form_handler_name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                {% trans "Choose form handler to add" %} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for form_handler_uid, form_handler_name in user_form_handler_plugins %}
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{% url 'fobi.add_form_handler_entry' form_entry.pk form_handler_uid %}">{{ form_handler_name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </ul>
 
                         <div class="clearfix"></div>
@@ -137,6 +138,7 @@
                                                     {% if form_handler.plugin_data or plugin.plugin_data_repr %}
                                                         <a class="popover-link" href="javascript:;"
                                                            data-toggle="popover" data-content="
+
 
 
 
