@@ -597,7 +597,7 @@ def delete_form_entry(request, form_entry_id, template_name=None):
 
     messages.info(
         request,
-        gettext('The form "{0}" was deleted successfully.').format(obj.name)
+        gettext('Le formulaire "{0}" a été supprimé !').format(obj.name)
     )
 
     return redirect('fobi.dashboard')
