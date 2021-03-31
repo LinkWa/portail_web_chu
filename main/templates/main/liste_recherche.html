@@ -8,14 +8,14 @@
             {% if user.role == "investigateur" %}
                 <h1 class="mt-4">Mes recherches</h1>
                 <h6>
-                    <form align="right" method="post" action="">
-                        <select>
-                            <option>Tout afficher</option>
-                            <option>Filtrer par mes recherches</option>
-                            <option>Filtrer par date (Du plus recent au plus ancien)</option>
+                    <form align="right" method="post" action="/liste_recherche_by_cdp/{{ user.id }}">
+                        <select id="filter">
+                            <option value="All" select="selected">Tout afficher</option>
+                            <option value="search">Filtrer par mes recherches</option>
+                            <option value="date">Filtrer par date (Du plus recent au plus ancien)</option>
                         </select>
                         {% csrf_token %}
-                        <button class="btn btn-primary">Appliquer le filtre</button>
+                        <button class="btn btn-primary" type="submit">Appliquer le filtre</button>
                     </form>
                 </h6>
                 <table class="table">
@@ -44,10 +44,10 @@
                 <h1 class="mt-4">Les recherches</h1>
                  <h6>
                     <form align="right" method="post" action="">
-                        <select>
-                            <option>Tout afficher</option>
-                            <option>Filtrer les recherches auquel je suis associées</option>
-                            <option>Filtrer par date (Du plus recent au plus ancien)</option>
+                        <select id="filter">
+                            <option value="All" select="selected">Tout afficher</option>
+                            <option value="search">Filtrer les recherches auquel je suis associées</option>
+                            <option value="date">Filtrer par date (Du plus recent au plus ancien)</option>
                         </select>
                         {% csrf_token %}
                         <button class="btn btn-primary" type="submit">Appliquer le filtre</button>
