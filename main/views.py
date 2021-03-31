@@ -1,45 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from fobi.models import FormEntry
 from formtools.wizard.views import SessionWizardView
-# Prefect
-from prefect import task
 
 from .forms import *
 from .models import Recherche, Comment
-
-"""
-Cette tache sert a vérifier que les champs du formulaire sont bien remplis de manière logique.
-Elle sert aussi à créer un model formulaire qui reprend les informations saisies dans ce dernier.
-
-Elle prend en paramètre un formulaire.
-Elle retourne le model prèt à etre envoyé en BDD.
-"""
-
-
-@task()
-def verif_form(first_form):
-    if first_form.is_valid():
-        first_name = first_form.cleaned_data["firstname"]
-        last_name = first_form.cleaned_data["lastname"]
-        description = first_form.cleaned_data["description"]  # Permet de rendre le formulaire "propre"
-
-        f = Recherche(first_name=first_name, last_name=last_name,
-                      description=description)  # Créer le model du formulaire à envoyer en BDD
-        return f
-
-
-"""
-Cette tache permet d'envoyer un model formulaire en base de donnée.
-
-Elle prend en paramètre le model à envoyer en bdd
-"""
-
-
-@task()
-def save_form(form):
-    form.save()  # Sauvegarde le formulaire
-
 
 """
 Fonction qui permet d'afficher la page d'accueil
@@ -48,18 +12,8 @@ Prend en paramètre un objet django request necessaire au bon fonctionnement du 
 """
 
 
-# Create your views here.
 def home(request):
     return render(request, "main/home.html")
-
-
-"""
-Fonction qui permet deux choses, la première est de créer un formulaire vierge.
-La deuxième permet de créer un flow de tache qui vérifie et sauvegarde les données entrées dans un formulaire
-
-Prend en paramètre un objet django request qui permet de connaitre l'état d'un formulaire
-Renvoie la page du formulaire
-"""
 
 
 def recherche(request):
@@ -165,15 +119,6 @@ def delete_comment(request, comment_id):
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
 
 
-# Accés à Fobi
-def fobi_dashboard(request):
-    form_entries = FormEntry._default_manager \
-        .filter(user__pk=request.user.pk) \
-        .select_related('user')
-    context = {"form_entries": form_entries}
-    return render(request, "main/fobi_dashboard.html", context)
-
-
 # Formulaires de classification
 class ClassificationWizard(SessionWizardView):
     template_name = "main/classification.html"
@@ -192,3 +137,11 @@ class ClassificationWizard(SessionWizardView):
                     '14': False, '15': False, '16': False}
         else:
             return {}
+
+    @staticmethod
+    def get_true_or_false(wizard):
+        cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
+        if cleaned_data.get("question_2") == "F":
+            return False
+        else:
+            return True
