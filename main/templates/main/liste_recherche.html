@@ -8,7 +8,7 @@
             {% if user.role == "investigateur" %}
                 <h1 class="mt-4">Mes recherches</h1>
                 <h6>
-                    <form align="right" method="post" action="/liste_recherche_by_cdp/{{ user.id }}">
+                    <form align="right" method="post" action="">
                         <select id="filter">
                             <option value="All" select="selected">Tout afficher</option>
                             <option value="search">Filtrer par mes recherches</option>
@@ -46,7 +46,7 @@
                     <form align="right" method="post" action="">
                         <select id="filter">
                             <option value="All" select="selected">Tout afficher</option>
-                            <option value="search">Filtrer les recherches auquel je suis associées</option>
+                            <a href="/liste_recherche_by_cdp/{{ user.id }}"><option value="search">Filtrer les recherches auquel je suis associées</option></a>
                             <option value="date">Filtrer par date (Du plus recent au plus ancien)</option>
                         </select>
                         {% csrf_token %}
