@@ -43,10 +43,10 @@
             {% elif user.role == "chef_projet" %}
                 <h1 class="mt-4">Les recherches</h1>
                  <h6>
-                    <form align="right" method="post" action="">
+                    <form align="right" method="post" action="/liste_recherche_by_cdp/{{ user.id }}">
                         <select id="filter">
                             <option value="All" select="selected">Tout afficher</option>
-                            <a href="/liste_recherche_by_cdp/{{ user.id }}"><option value="search">Filtrer les recherches auquel je suis associées</option></a>
+                            <a href=""><option value="search">Filtrer les recherches auquel je suis associées</option></a>
                             <option value="date">Filtrer par date (Du plus recent au plus ancien)</option>
                         </select>
                         {% csrf_token %}

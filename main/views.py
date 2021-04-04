@@ -6,6 +6,7 @@ from formtools.wizard.views import SessionWizardView
 # Prefect
 from prefect import task
 
+from account.models import Account
 from .forms import *
 from .models import Recherche, Comment
 
@@ -81,17 +82,21 @@ def recherche(request):
     return render(request, "main/recherche.html", {"form": recherche_form})
 
 def liste_recherche_by_cdp(request, cdp_ass):
-    data = Recherche.objects.all(cdp_ass=cdp_ass)
+    idcdp = int(cdp_ass)
+    namePersonne = Account.objects.filter(id=idcdp)
+    nameP = namePersonne.last_name + ' ' + namePersonne.first_name
+
+    data = Recherche.objects.filter(cdp_ass=nameP)
 
     context = {
         "datas": data
     }
 
-    # if request.method == "POST":
-    #     if "submit_valide" in request.POST:
-    #         temp_model = Recherche.objects.get(id=request.POST.get("submit_valide"))
-    #         temp_model.is_valid = not temp_model.is_valid
-    #         temp_model.save()
+    if request.method == "POST":
+        if "submit_valide" in request.POST:
+            temp_model = Recherche.objects.get(id=request.POST.get("submit_valide"))
+            temp_model.is_valid = not temp_model.is_valid
+            temp_model.save()
 
     return render(request, "main/liste_recherche.html", context)
 
