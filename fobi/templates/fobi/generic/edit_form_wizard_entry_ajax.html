@@ -40,7 +40,7 @@
                 <form id="fobi-form" method="post" action="{{ request.path }}?active_tab=tab-form-elements" novalidate="novalidate" class="{% block form_elements_html_class %}form-horizontal ui-sortable{% endblock %}">
                   {% csrf_token %}
                   <div class="well well-sm">
-                      {% blocktrans %}Fields marked with <span class="required-field">*</span> are required{% endblocktrans %}
+                      {% blocktrans %}Les champs marqués avec <span class="required-field">*</span> sont requis{% endblocktrans %}
                   </div>
                   {% for form_wizard_form_entry in form_wizard_entry_forms %}
                       <div class="form-group">

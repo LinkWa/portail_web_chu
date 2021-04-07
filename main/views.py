@@ -1,6 +1,5 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from formtools.wizard.views import SessionWizardView
 
 from .forms import *
 from .models import Recherche, Comment
@@ -119,29 +118,6 @@ def delete_comment(request, comment_id):
     return HttpResponseRedirect("/detailed_form/" + str(recherche_id))
 
 
-# Formulaires de classification
-class ClassificationWizard(SessionWizardView):
-    template_name = "main/classification.html"
-
-    def done(self, form_list, **kwargs):
-        return render(self.request, 'main/classification.html', {
-            'form_data': [form.cleaned_data for form in form_list],
-        })
-
-    @staticmethod
-    def get_skip_questions(wizard):
-        cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
-        if cleaned_data.get("question_2") == "F":
-            return {'2': False, '3': False, '4': False, '5': False, '6': False, '7': False,
-                    '8': False, '9': False, '10': False, '11': False, '12': False, '13': False,
-                    '14': False, '15': False, '16': False}
-        else:
-            return {}
-
-    @staticmethod
-    def get_true_or_false(wizard):
-        cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
-        if cleaned_data.get("question_2") == "F":
-            return False
-        else:
-            return True
+# Classification formulaire
+def classification(request):
+    return render(request, "main/classification.html")

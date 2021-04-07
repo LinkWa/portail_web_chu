@@ -1,31 +1,534 @@
-{% extends "main/base.html" %}
-{% load crispy_forms_filters %}
-{% load i18n %}
-{% block title %}Classification{% endblock %}
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Classification des formulaires{% endblock %}
 
 {% block content %}
+
+
     <div class="container">
-        <p>Etape {{ wizard.steps.step1 }} sur {{ wizard.steps.count }}</p>
-        <form action="" method="post">{% csrf_token %}
-            <table>
-                {{ wizard.management_form }}
-                {% if wizard.form.forms %}
-                    {{ wizard.form.management_form }}
-                    {% for form in wizard.form.forms %}
-                        {{ form }}
-                    {% endfor %}
-                {% else %}
-                    {{ wizard.form|crispy }}
-                {% endif %}
-            </table>
-            {% if wizard.steps.prev %}
-                <button class="btn btn-primary mt-4" name="wizard_goto_step" type="submit"
-                        value="{{ wizard.steps.first }}">{% trans "Première étape" %}</button>
-                <button class="btn btn-primary mt-4" name="wizard_goto_step" type="submit"
-                        value="{{ wizard.steps.prev }}">{% trans "Précédent" %}</button>
-            {% endif %}
-            <input class="btn btn-success mt-4" type="submit" value="{% trans "Valider" %}"/>
+        <form>
+            <div class="question1" id="question1" onclick="displaySuiteQ1()">
+                <label> <b> Question 1 : </b> Participation patient : La recherche nécessite-t-elle la participation du
+                    patient
+                    hors des soins habituels ? (Exemples: prise de sang additionnelle, questionnaire, recueil de données
+                    physiologiques)</label>
+                <input type="radio" name="radioQ1" id="radioQ1Oui"> <label for="radioQ1Oui">
+                Oui </label>
+                <input type="radio" name="radioQ1" id="radioQ1Non"> <label for="radioQ1Non"> Non </label>
+            </div>
+
+            <div class="question2" id="question2" onclick="displaySuiteQ2()" style="display: none">
+                <label> <b> Question 2 : </b> Votre recherche évalue-t-elle ? (Plusieurs choix possibles) </label> <br>
+                <input type="checkbox" name="radioQ2A" id="radioQ2A"> <label for="radioQ2A"> A - Un médicament avec ou
+                sans AMM </label><br>
+                <input type="checkbox" name="radioQ2B" id="radioQ2B"> <label for="radioQ2B"> B - Un dispositif
+                médical non marqué CE ou utilisé selon des conditions hors notice d’utilisation </label><br>
+                <input type="checkbox" name="radioQ2C" id="radioQ2C"> <label for="radioQ2C"> C - Un produit de santé
+                autre que médicament (produits biologiques, produits sanguins labiles, etc.) </label><br>
+                <input type="checkbox" name="radioQ2D" id="radioQ2D"> <label for="radioQ2D"> D - Un produit « hors
+                produit de santé » (complément alimentaire, ...) </label><br>
+                <input type="checkbox" name="radioQ2E" id="radioQ2E"> <label for="radioQ2E"> E - Cosmétique hors
+                conditions normales d'utilisation </label><br>
+                <input type="checkbox" name="radioQ2F" id="radioQ2F"> <label for="radioQ2F"> F - Aucune de ces
+                réponses </label><br>
+            </div>
+
+            <div class="question3" id="question3" onclick="displaySuiteQ3()" style="display: none">
+                <label> <b> Question 3 : </b> Utilisation selon les recommandations / normes du fabricant</label> <br>
+                <input type="radio" name="radioQ3" id="radioQ3Oui"> <label for="radioQ3Oui"> Oui </label>
+                <input type="radio" name="radioQ3" id="radioQ3Non" checked> <label for="radioQ3Non"> Non </label>
+            </div>
+
+            <div class="question4" id="question4" onclick="displaySuiteQ4()" style="display: none">
+                <label> <b> Question 4 : </b> Type d’intervention : Votre recherche ajoute-t-elle ?</label> <br>
+                <input type="radio" name="radioQ4" id="radioQ4A"> <label for="radioQ4A"> A - Un capteur ou une
+                imagerie ou une exploration fonctionnelle par imagerie </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4B"> <label for="radioQ4B"> B - Une randomisation
+                (tirage au sort) simple </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4C"> <label for="radioQ4C"> C - Une analyse
+                sanguine </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4D"> <label for="radioQ4D"> D - Un prélèvement
+                biologique non sanguin </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4E"> <label for="radioQ4E"> E - Une administration, une
+                utilisation de produit / dispositif médical mis sur le marché de l'UE </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4F"> <label for="radioQ4F"> F - Une administration de
+                médicaments auxiliaires </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4G"> <label for="radioQ4G"> G - Un entretien et/ou un
+                questionnaire </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4H"> <label for="radioQ4H"> H - Des techniques de
+                psychothérapie et / ou de thérapie cognitivo-comportementale </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4I"> <label for="radioQ4I"> I - Un enregistrement audio
+                / vidéo / photo hors imagerie médicale </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4J"> <label for="radioQ4J"> J - Des mesures
+                anthropométriques sans intervention invasive </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4K"> <label for="radioQ4K"> K - Le recueil de données
+                électrophysiologiques sur un matériel implanté ou en cours d'implémentation pour le soin </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4L"> <label for="radioQ4L"> L - L'usage de capteurs
+                extra-corporels non invasifs </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4M"> <label for="radioQ4M"> M - Un acte invasif non
+                réalisé dans la pratique habituelle </label><br>
+                <input type="radio" name="radioQ4" id="radioQ4N"> <label for="radioQ4N"> N - Un acte non médical
+                (Osthéopathie, hypnose, ...) </label><br>
+            </div>
+
+            <div class="question5" id="question5" onclick="" style="display: none">
+                <label> <b> Question 5 : </b> Y-a-t-il utilisation d’un produit de contraste ou d’un
+                    médicament radiopharmaceutique ?</label> <br>
+                <input type="radio" name="radioQ5" id="radioQ5Oui"> <label for="radioQ5Oui"> Oui </label>
+                <input type="radio" name="radioQ5" id="radioQ5Non"> <label for="radioQ5Non"> Non </label>
+            </div>
+
+
+            <div class="question6" id="question6" onclick="" style="display: none">
+                <label> <b> Question 6 : </b> Y-a-t-il franchissement de la barrière cutanée ou muqueuse ?</label> <br>
+                <input type="radio" name="radioQ6" id="radioQ6Oui"> <label for="radioQ6Oui"> Oui </label>
+                <input type="radio" name="radioQ6" id="radioQ6Non"> <label for="radioQ6Non"> Non </label>
+            </div>
+
+            <div class="question7" id="question7" onclick="" style="display: none">
+                <label> <b> Question 7 : </b> Précisez le type d’analyse sanguine ajoutée ?</label> <br>
+                <input type="radio" name="radioQ7" id="radioQ7A"> <label for="radioQ7A"> A - Au moins un prélèvement
+                additionnel </label> <br>
+                <input type="radio" name="radioQ7" id="radioQ7B"> <label for="radioQ7B"> B - Un tube supplémentaire
+                obtenu lors d’un prélèvement sanguin déjà prévu </label>
+            </div>
+
+            <div class="question8" id="question8" onclick="" style="display: none">
+                <label> <b> Question 8 : </b> Le volume sanguin prélevé est-il conforme au tableau ci-après ?</label>
+                <br>
+                <img src="{% static 'main/question8.png' %}" alt="tableau question8">
+                <input type="radio" name="radioQ8" id="radioQ8Oui"> <label for="radioQ8Oui"> Oui </label>
+                <input type="radio" name="radioQ8" id="radioQ8Non"> <label for="radioQ8Non"> Non </label>
+            </div>
+
+            <div class="question9" id="question9" onclick="displaySuiteQ9()" style="display: none">
+                <label> <b> Question 9 : </b> Le prélèvement est-il parmi la liste suivante ?</label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9A"> <label for="radioQ9A"> A - Biopsie cutanée
+                superficielle </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9B"> <label for="radioQ9B"> B – Tissus ou biopsie élargie
+                ou supplémentaire </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9C"> <label for="radioQ9C"> C – Urine après
+                sondage </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9D"> <label for="radioQ9D"> D – Expectoration
+                provoquée </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9E"> <label for="radioQ9E"> E – Liquide amniotique </label>
+                <br>
+                <input type="radio" name="radioQ9" id="radioQ9F"> <label for="radioQ9F"> F – Liquide
+                céphalorachidien </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9G"> <label for="radioQ9G"> G – Ecouvillonnage du col
+                utérin, du vagin, de l’œil, du nasopharynx </label> <br>
+                <input type="radio" name="radioQ9" id="radioQ9H"> <label for="radioQ9H"> H - Aucune de ces
+                propositions </label> <br>
+            </div>
+
+            <div class="question10" id="question10" onclick="" style="display: none">
+                <label> <b> Question 10 : </b> Touche la face et/ou les plis ?</label> <br>
+                <input type="radio" name="radioQ10" id="radioQ10Oui"> <label for="radioQ10Oui"> Oui </label>
+                <input type="radio" name="radioQ10" id="radioQ10Non"> <label for="radioQ10Non"> Non </label>
+            </div>
+
+            <div class="question11" id="question11" onclick="" style="display: none">
+                <label> <b> Question 11 : </b> Est-elle obtenue dans le cadre du soin ou d’une intervention déjà prévue
+                    ?</label> <br>
+                <input type="radio" name="radioQ11" id="radioQ11Oui"> <label for="radioQ11Oui"> Oui </label>
+                <input type="radio" name="radioQ11" id="radioQ11Non"> <label for="radioQ11Non"> Non </label>
+            </div>
+
+            <div class="question12" id="question12" onclick="" style="display: none">
+                <label> <b> Question 12 : </b> Le prélèvement de liquide amniotique est-il déjà prévu dans le cadre du
+                    soin ?</label> <br>
+                <input type="radio" name="radioQ12" id="radioQ12A"> <label for="radioQ12A"> Oui avec un volume total du
+                soin et de la recherche < 5 ml </label> <br>
+                <input type="radio" name="radioQ12" id="radioQ12B"> <label for="radioQ12B"> Oui avec un volume total du
+                soin et de la recherche >= 5 ml </label> <br>
+                <input type="radio" name="radioQ12" id="radioQ12C"> <label for="radioQ12C"> Non </label>
+            </div>
+
+            <div class="question13" id="question13" onclick="" style="display: none">
+                <label> <b> Question 13 : </b> Le prélèvement de liquide céphalorachidien est-il déjà prévu dans le
+                    cadre du soin ?</label> <br>
+                <input type="radio" name="radioQ13" id="radioQ13A"> <label for="radioQ13A"> Oui avec un volume total du
+                soin et de la recherche < 5 ml </label> <br>
+                <input type="radio" name="radioQ13" id="radioQ13B"> <label for="radioQ13B"> Oui avec un volume total du
+                soin et de la recherche >= 5 ml </label> <br>
+                <input type="radio" name="radioQ13" id="radioQ13C"> <label for="radioQ13C"> Non </label>
+            </div>
+
+            <div class="question14" id="question14" onclick="" style="display: none">
+                <label> <b> Question 14 : </b> Prélèvement non invasif: Le prélèvement est-il dans la liste suivante ?
+                    (plusieurs choix possibles) </label> <br>
+                <input type="checkbox" name="radioQ14A" id="radioQ14A"> <label for="radioQ14A"> A - Salive, glaire,
+                urine, selle, sperme, méconium, lait maternel, colostrum, poils, cheveux, ongles, sueur </label><br>
+                <input type="checkbox" name="radioQ14B" id="radioQ14B"> <label for="radioQ14B"> B - Ecouvillonnage
+                superficiel de la peau, du nez, du conduit auditif, de la cavité buccale (incluant l'oropharynx), de
+                l'orifice anal, des stomies </label><br>
+                <input type="checkbox" name="radioQ14C" id="radioQ14C"> <label for="radioQ14C"> C - Volume
+                supplémentaire minime de tout épanchement (Exemples : Liquide d'ascite, Epanchement pleural,
+                etc.) </label><br>
+                <input type="checkbox" name="radioQ14D" id="radioQ14D"> <label for="radioQ14D"> D - Il ne s’agit d’aucun
+                de ces prélèvements non invasifs </label><br>
+            </div>
+
+            <div class="question15" id="question15" onclick="" style="display: none">
+                <label> <b> Question 15 : </b> L’utilisation est-elle ?</label> <br>
+                <input type="radio" name="radioQ15" id="radioQ15A"> <label for="radioQ15A"> A - Conforme à leur
+                destination et conditions d’utilisation </label> <br>
+                <input type="radio" name="radioQ15" id="radioQ15B"> <label for="radioQ15B">B - Non conforme à leur
+                destination et/ou conditions d’utilisation </label>
+            </div>
+
+            <div class="question16" id="question16" onclick="" style="display: none">
+                <label> <b> Question 16 : </b> Précisez l’ajout de médicament auxiliaire : il s’agit ici d’un médicament
+                    qui est utilisé pour les besoins de l’essai clinique mais non comme médicament expérimental. Il
+                    n’est donc pas l’objet de la recherche.</label> <br>
+                <input type="radio" name="radioQ16" id="radioQ16A"> <label for="radioQ16A"> A - Administration conforme
+                à leur autorisation de mise sur le marché </label> <br>
+                <input type="radio" name="radioQ16" id="radioQ16B"> <label for="radioQ16B"> B - L'entretien et/ou le
+                questionnaire sont susceptibles de modifier la prise en charge et / ou les contraintes </label> <br>
+                <input type="radio" name="radioQ16" id="radioQ16C"> <label for="radioQ16C"> C - Administration sans
+                preuve de santé et/ou d'efficacité suffisante </label>
+            </div>
+
+            <div class="question17" id="question17" onclick="" style="display: none">
+                <label> <b> Question 17 : </b> Précisez l'usage de l'entretien ou du questionnaire</label> <br>
+                <input type="radio" name="radioQ17" id="radioQ17A"> <label for="radioQ17A"> A - L'entretien et/ou le
+                questionnaire ne modifient pas la prise en charge et les contraintes et inconvénients apportés à la
+                personne qui se prête à la recherche sont négligeables </label> <br>
+                <input type="radio" name="radioQ17" id="radioQ17B"> <label for="radioQ17B"> B - L'entretien et/ou le
+                questionnaire sont susceptibles de modifier la prise en charge et / ou les contraintes et inconvénients
+                apportés à la personne qui se prête à la recherche sont considérés comme non négligeables </label> <br>
+            </div>
+
+            <div class="question18" id="question18" onclick="displaySuiteQ18()" style="display: none">
+                <label> <b> Question 18 : </b> Précisez le type (plusieurs choix possibles). Il s'agit de : RPU: Résumé
+                    de passage aux urgences </label> <br>
+                <input type="checkbox" name="radioQ18A" id="radioQ18A"> <label for="radioQ18A"> A - Recueil de données
+                du dossier médical (en rétrospectif ou en prospectif) </label><br>
+                <input type="checkbox" name="radioQ18B" id="radioQ18B"> <label for="radioQ18B"> B - Requalification
+                d'échantillons biologiques collectés pour le soin (hors cellules et tissus germinaux) </label><br>
+                <input type="checkbox" name="radioQ18C" id="radioQ18C"> <label for="radioQ18C"> C - Déchets
+                opératoires </label><br>
+                <input type="checkbox" name="radioQ18D" id="radioQ18D"> <label for="radioQ18D"> D - Changement de
+                finalité de prélèvements déjà réalisés pour une recherche </label><br>
+                <input type="checkbox" name="radioQ18E" id="radioQ18E"> <label for="radioQ18E"> E - Randomisation de 2
+                pratiques de soins habituelles </label><br>
+                <input type="checkbox" name="radioQ18F" id="radioQ18F"> <label for="radioQ18F"> F - Analyse de données
+                PMSI et/ou RPU </label><br>
+                <input type="checkbox" name="radioQ18G" id="radioQ18G"> <label for="radioQ18G"> G - Autres bases de
+                données de santé médico-administratives </label><br>
+            </div>
+
+            <div class="question19" id="question19" onclick="displaySuiteQ19()" style="display: none">
+                <label> <b> Question 19 : </b> Comment les données seront-elles collectées ?</label> <br>
+                <input type="radio" name="radioQ19" id="radioQ19A"> <label for="radioQ19A"> A - Anonymisées </label>
+                <br>
+                <input type="radio" name="radioQ19" id="radioQ19B"> <label for="radioQ19B"> B - Pseudonymisées </label>
+                <br>
+                <input type="radio" name="radioQ19" id="radioQ19C"> <label for="radioQ19C"> C - Identifiantes </label>
+            </div>
+
+            <div class="question20" id="question20" onclick="displaySuiteQ20()" style="display: none">
+                <label> <b> Question 20 : </b> S’agit-il d’une recherche « interne » ? Usage exclusif de l’équipe de
+                    soins</label> <br>
+                <input type="radio" name="radioQ20" id="radioQ20Oui"> <label for="radioQ20Oui"> Oui </label>
+                <input type="radio" name="radioQ20" id="radioQ20Non"> <label for="radioQ20Non"> Non </label>
+            </div>
+
+            <div class="question21" id="question21" onclick="displaySuiteQ21()" style="display: none">
+                <label> <b> Question 21 : </b> Y-a-t-il une possibilité d’informer tous les participants et d’obtenir
+                    l’accord/opposition écrit des participants ?</label> <br>
+                <input type="radio" name="radioQ21" id="radioQ21Oui"> <label for="radioQ21Oui"> Oui </label>
+                <input type="radio" name="radioQ21" id="radioQ21Non"> <label for="radioQ21Non"> Non </label>
+            </div>
+
+            <div class="question22" id="question22" onclick="" style="display: none">
+                <label> <b> Question 22 : </b> Types de données recueillies: souhaitez-vous recueillir des données
+                    autres que celles présentées ci - dessous?</label> <br>
+                <input type="radio" name="radioQ22" id="radioQ22Oui"> <label for="radioQ22Oui"> Oui </label>
+                <input type="radio" name="radioQ22" id="radioQ22Non"> <label for="radioQ22Non"> Non </label>
+            </div>
+
+            <input type="submit" value="Valider">
         </form>
     </div>
 
+
+
+    <script type="text/javascript">
+        function displaySuiteQ1() {
+            let checkboxQ1Oui = document.getElementById("radioQ1Oui");
+            if (checkboxQ1Oui.checked) {
+                document.getElementById("question2").style.display = "block";
+                document.getElementById("question21").style.display = "block";
+                document.getElementById("question18").style.display = "none";
+                displaySuiteQ18();
+            } else {
+                document.getElementById("question2").style.display = "none";
+                document.getElementById("question21").style.display = "none";
+                document.getElementById("question18").style.display = "block";
+                displaySuiteQ2();
+                displaySuiteQ21();
+                displaySuiteQ20();
+            }
+        }
+
+        function displaySuiteQ2() {
+            if (document.getElementById("question2").style.display === "block") {
+                let checkboxQ2A = document.getElementById("radioQ2A");
+                let checkboxQ2D = document.getElementById("radioQ2D");
+                if (checkboxQ2A.checked) {
+                    document.getElementById("question3").style.display = "block";
+                } else if (checkboxQ2D.checked) {
+                    document.getElementById("question3").style.display = "none";
+                    document.getElementById("question4").style.display = "block";
+                } else {
+                    document.getElementById("question3").style.display = "none";
+                    document.getElementById("question4").style.display = "none";
+                }
+                if (checkboxQ2D.checked) {
+                    document.getElementById("question4").style.display = "block";
+                } else if (checkboxQ2A.checked) {
+                    document.getElementById("question4").style.display = "none";
+                    document.getElementById("question3").style.display = "block";
+                } else {
+                    document.getElementById("question3").style.display = "none";
+                    document.getElementById("question4").style.display = "none";
+                }
+                displaySuiteQ4();
+            } else {
+                document.getElementById("question3").style.display = "none";
+                document.getElementById("radioQ2A").checked = false;
+                document.getElementById("question4").style.display = "none";
+                document.getElementById("radioQ2D").checked = false;
+                displaySuiteQ4();
+                let checks = document.querySelectorAll("#question2 input[type='checkbox']");
+                for (let i = 0; i < checks.length; i++) {
+                    let check = checks[i];
+                    if (!check.disabled) {
+                        check.checked = false;
+                    }
+                }
+            }
+        }
+
+        function displaySuiteQ3() {
+            let checkboxQ3Oui = document.getElementById("radioQ3Oui");
+            if (checkboxQ3Oui.checked) {
+                document.getElementById("question4").style.display = "block";
+            } else if (document.getElementById("radioQ2D").checked === false) {
+                document.getElementById("question4").style.display = "none";
+                displaySuiteQ4();
+            }
+        }
+
+        function displaySuiteQ4() {
+            if (document.getElementById("question4").style.display === "block") {
+                if (document.getElementById("radioQ4A").checked) {
+                    document.getElementById("question5").style.display = "block";
+                    document.getElementById("question6").style.display = "block";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "none";
+                } else if (document.getElementById("radioQ4C").checked) {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "block";
+                    document.getElementById("question8").style.display = "block";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "none";
+                } else if (document.getElementById("radioQ4D").checked) {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question9").style.display = "block";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "none";
+                } else if (document.getElementById("radioQ4E").checked) {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question9").style.display = "none";
+                    document.getElementById("question15").style.display = "block";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "none";
+                } else if (document.getElementById("radioQ4F").checked) {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question9").style.display = "none";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "block";
+                    document.getElementById("question17").style.display = "none";
+                } else if (document.getElementById("radioQ4G").checked) {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question9").style.display = "none";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "block";
+                } else {
+                    document.getElementById("question5").style.display = "none";
+                    document.getElementById("question6").style.display = "none";
+                    document.getElementById("question7").style.display = "none";
+                    document.getElementById("question8").style.display = "none";
+                    document.getElementById("question9").style.display = "none";
+                    document.getElementById("question15").style.display = "none";
+                    document.getElementById("question16").style.display = "none";
+                    document.getElementById("question17").style.display = "none";
+                }
+            } else {
+                document.getElementById("radioQ4A").checked = false;
+                document.getElementById("question5").style.display = "none";
+                document.getElementById("question6").style.display = "none";
+                document.getElementById("radioQ4C").checked = false;
+                document.getElementById("question7").style.display = "none";
+                document.getElementById("question8").style.display = "none";
+                document.getElementById("radioQ4D").checked = false;
+                document.getElementById("question9").style.display = "none";
+                document.getElementById("radioQ4E").checked = false;
+                document.getElementById("question15").style.display = "none";
+                document.getElementById("radioQ4F").checked = false;
+                document.getElementById("question16").style.display = "none";
+                document.getElementById("radioQ4G").checked = false;
+                document.getElementById("question17").style.display = "none";
+                let checks = document.querySelectorAll("#question4 input[type='radio']");
+                for (let i = 0; i < checks.length; i++) {
+                    let check = checks[i];
+                    if (!check.disabled) {
+                        check.checked = false;
+                    }
+                }
+            }
+            displaySuiteQ9();
+        }
+
+        function displaySuiteQ9() {
+            if (document.getElementById("question9").style.display === "block") {
+                if (document.getElementById("radioQ9A").checked) {
+                    document.getElementById("question10").style.display = "block";
+                    document.getElementById("question11").style.display = "none";
+                    document.getElementById("question12").style.display = "none";
+                    document.getElementById("question13").style.display = "none";
+                    document.getElementById("question14").style.display = "none";
+                } else if (document.getElementById("radioQ9B").checked) {
+                    document.getElementById("question10").style.display = "none";
+                    document.getElementById("question11").style.display = "block";
+                    document.getElementById("question12").style.display = "none";
+                    document.getElementById("question13").style.display = "none";
+                    document.getElementById("question14").style.display = "none";
+                } else if (document.getElementById("radioQ9E").checked) {
+                    document.getElementById("question10").style.display = "none";
+                    document.getElementById("question11").style.display = "none";
+                    document.getElementById("question12").style.display = "block";
+                    document.getElementById("question13").style.display = "none";
+                    document.getElementById("question14").style.display = "none";
+                } else if (document.getElementById("radioQ9F").checked) {
+                    document.getElementById("question10").style.display = "none";
+                    document.getElementById("question11").style.display = "none";
+                    document.getElementById("question12").style.display = "none";
+                    document.getElementById("question13").style.display = "block";
+                    document.getElementById("question14").style.display = "none";
+                } else if (document.getElementById("radioQ9H").checked) {
+                    document.getElementById("question10").style.display = "none";
+                    document.getElementById("question11").style.display = "none";
+                    document.getElementById("question12").style.display = "none";
+                    document.getElementById("question13").style.display = "none";
+                    document.getElementById("question14").style.display = "block";
+                } else {
+                    document.getElementById("question10").style.display = "none";
+                    document.getElementById("question11").style.display = "none";
+                    document.getElementById("question12").style.display = "none";
+                    document.getElementById("question13").style.display = "none";
+                    document.getElementById("question14").style.display = "none";
+                }
+            } else {
+                document.getElementById("radioQ9A").checked = false;
+                document.getElementById("question10").style.display = "none";
+                document.getElementById("radioQ9B").checked = false;
+                document.getElementById("question11").style.display = "none";
+                document.getElementById("radioQ9E").checked = false;
+                document.getElementById("question12").style.display = "none";
+                document.getElementById("radioQ9F").checked = false;
+                document.getElementById("question13").style.display = "none";
+                document.getElementById("radioQ9H").checked = false;
+                document.getElementById("question14").style.display = "none";
+            }
+        }
+
+        function displaySuiteQ18() {
+            if (document.getElementById("question18").style.display === "block") {
+                if (document.getElementById("radioQ18A").checked | document.getElementById("radioQ18B").checked | document.getElementById("radioQ18C").checked | document.getElementById("radioQ18D").checked | document.getElementById("radioQ18E").checked | document.getElementById("radioQ18F").checked) {
+                    document.getElementById("question19").style.display = "block";
+                } else {
+                    document.getElementById("question19").style.display = "none";
+                }
+            } else {
+                document.getElementById("question19").style.display = "none";
+                let checks = document.querySelectorAll("#question18 input[type='checkbox']");
+                for (let i = 0; i < checks.length; i++) {
+                    let check = checks[i];
+                    if (!check.disabled) {
+                        check.checked = false;
+                    }
+                }
+            }
+            displaySuiteQ19();
+
+        }
+
+        function displaySuiteQ19() {
+            if (document.getElementById("question19").style.display === "block") {
+                if (document.getElementById("radioQ19B").checked) {
+                    document.getElementById("question20").style.display = "block";
+                } else {
+                    document.getElementById("question20").style.display = "none";
+                }
+            } else {
+                document.getElementById("question20").style.display = "none";
+                document.getElementById("radioQ19B").checked = false;
+            }
+            displaySuiteQ20();
+        }
+
+        function displaySuiteQ20() {
+            if (document.getElementById("question20").style.display === "block") {
+                if (document.getElementById("radioQ20Non").checked) {
+                    document.getElementById("question21").style.display = "block";
+                } else {
+                    document.getElementById("question21").style.display = "none";
+                }
+            } else {
+                document.getElementById("question21").style.display = "none";
+                document.getElementById("radioQ20Non").checked = false;
+            }
+            displaySuiteQ21()
+        }
+
+        function displaySuiteQ21() {
+            if (document.getElementById("question21").style.display === "block") {
+                if (document.getElementById("radioQ21Oui").checked) {
+                    document.getElementById("question22").style.display = "block";
+                } else {
+                    document.getElementById("question22").style.display = "none";
+                }
+            } else {
+                document.getElementById("question22").style.display = "none";
+                document.getElementById("radioQ21Oui").checked = false;
+                document.getElementById("radioQ22Oui").checked = false;
+                document.getElementById("radioQ22Non").checked = false;
+            }
+        }
+
+
+    </script>
 {% endblock %}
