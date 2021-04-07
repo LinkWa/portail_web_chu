@@ -3,14 +3,12 @@ from __future__ import absolute_import
 import logging
 
 from autoslug import AutoSlugField
-
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
-
 from six import python_2_unicode_compatible
 
 from .base import (
@@ -47,13 +45,13 @@ __all__ = (
     'FormWizardHandlerEntry',
 )
 
-
 logger = logging.getLogger(__name__)
 
 # ****************************************************************************
 # **************** Safe User import for Django > 1.5, < 1.8 ******************
 # ****************************************************************************
 AUTH_USER_MODEL = settings.AUTH_USER_MODEL
+
 
 # ****************************************************************************
 # ****************************************************************************
@@ -117,6 +115,7 @@ class AbstractPluginModel(models.Model):
         Mainly used in admin.
         """
         return self.plugin_uid
+
     plugin_uid_code.allow_tags = True
     plugin_uid_code.short_description = _('UID')
 
@@ -126,6 +125,7 @@ class AbstractPluginModel(models.Model):
         Mainly used in admin.
         """
         return self.__str__()
+
     plugin_uid_admin.allow_tags = True
     plugin_uid_admin.short_description = _('Plugin')
 
@@ -138,6 +138,7 @@ class AbstractPluginModel(models.Model):
         :return string:
         """
         return ', '.join([g.name for g in self.groups.all()])
+
     groups_list.allow_tags = True
     groups_list.short_description = _('Groups')
 
@@ -150,6 +151,7 @@ class AbstractPluginModel(models.Model):
         :return string:
         """
         return ', '.join([u.get_username() for u in self.users.all()])
+
     users_list.allow_tags = True
     users_list.short_description = _('Users')
 
@@ -172,6 +174,7 @@ class FormElement(AbstractPluginModel):
         _("Plugin UID"), max_length=255, unique=True, editable=False,
         # choices=get_registered_form_element_plugins()
     )
+
     # objects = FormFieldPluginModelManager()
 
     class Meta(object):
@@ -202,6 +205,7 @@ class FormHandler(AbstractPluginModel):
         _("Plugin UID"), max_length=255, unique=True, editable=False,
         # choices=get_registered_form_handler_plugins()
     )
+
     # objects = FormHandlerPluginModelManager()
 
     class Meta(object):
@@ -245,6 +249,7 @@ class FormWizardHandler(AbstractPluginModel):
         """Add choices."""
         return get_registered_form_wizard_handler_plugins()
 
+
 # *****************************************************************************
 # *****************************************************************************
 # ******************************** Entry models *******************************
@@ -261,13 +266,13 @@ class FormWizardEntry(models.Model):
         verbose_name=_("User"),
         on_delete=models.CASCADE
     )
-    name = models.CharField(_("Name"), max_length=255)
+    name = models.CharField(_("Nom de formulaire"), max_length=255)
     title = models.CharField(
-        _("Title"),
+        _("Titre"),
         max_length=255,
         null=True,
         blank=True,
-        help_text=_("Shown in templates if available.")
+        help_text=_("Titre du formulaire dans le template")
     )
     slug = AutoSlugField(
         populate_from='name',
@@ -275,9 +280,9 @@ class FormWizardEntry(models.Model):
         unique=True
     )
     is_public = models.BooleanField(
-        _("Is public?"),
+        _("Formulaire public ?"),
         default=False,
-        help_text=_("Makes your form wizard visible to the public.")
+        help_text=_("Formulaire visible par le public")
     )
     is_cloneable = models.BooleanField(
         _("Is cloneable?"),
@@ -363,81 +368,74 @@ class FormEntry(models.Model):
         verbose_name=_("User"),
         on_delete=models.CASCADE
     )
-    name = models.CharField(_("Name"), max_length=255)
+    name = models.CharField(_("Nom du formulaire"), max_length=255)
     title = models.CharField(
-        _("Title"),
+        _("Titre"),
         max_length=255,
         null=True,
         blank=True,
-        help_text=_("Shown in templates if available.")
+        help_text=_("Titre du formulaire dans le template")
     )
     slug = AutoSlugField(
         populate_from='name', verbose_name=_("Slug"), unique=True
     )
     is_public = models.BooleanField(
-        _("Public?"),
+        _("Formulaire public ?"),
         default=False,
-        help_text=_("Makes your form visible to the public.")
+        help_text=_("Formulaire visible par le public")
     )
     active_date_from = models.DateTimeField(
-        _("Active from"),
+        _("Actif à partir de ?"),
         null=True,
         blank=True,
-        help_text=_("Date and time when the form becomes active "
-                    "in the format: 'YYYY-MM-DD HH:MM'. "
-                    "Leave it blank to activate immediately.")
+        help_text=_("Format : YYYY-MM-DD HH:MM (maintenant si laissé blanc)")
     )
     active_date_to = models.DateTimeField(
-        _("Active until"),
+        _("Actif jusqu'à ?"),
         null=True,
         blank=True,
-        help_text=_("Date and time when the form becomes inactive "
-                    "in the format: 'YYYY-MM-DD HH:MM'. "
-                    "Leave it blank to keep active forever.")
+        help_text=_("Format : YYYY-MM-DD HH:MM (maintenant si laissé blanc)")
     )
     inactive_page_title = models.CharField(
-        _("Inactive form page title"),
+        _("Titre formulaire inactif"),
         max_length=255,
         null=True,
         blank=True,
-        help_text=_("Custom message title to display if form is inactive.")
+        help_text=_("Titre si le formulaire est inactif")
     )
     inactive_page_message = models.TextField(
-        _("Inactive form page body"),
+        _("Message formulaire inactif"),
         null=True,
         blank=True,
-        help_text=_("Custom message text to display if form is inactive.")
+        help_text=_("Message si le formulaire est inactif")
     )
     is_cloneable = models.BooleanField(
-        _("Cloneable?"),
+        _("Formulaire clonable ?"),
         default=False,
-        help_text=_("Makes your form cloneable by other users.")
+        help_text=_("Le formulaire est-il clonable par un autre utilisateur ?")
     )
     # position = models.PositiveIntegerField(
     #     _("Position"), null=True, blank=True
     # )
     success_page_title = models.CharField(
-        _("Success page title"),
+        _("Titre formulaire validé"),
         max_length=255,
         null=True,
         blank=True,
-        help_text=_("Custom message title to display after valid form is "
-                    "submitted")
+        help_text=_("Titre du message si le formulaire est validé")
     )
     success_page_message = models.TextField(
-        _("Success page body"),
+        _("Message formulaire validé"),
         null=True,
         blank=True,
-        help_text=_("Custom message text to display after valid form is "
-                    "submitted")
+        help_text=_("Message si le formulaire est validé")
     )
     action = models.CharField(
-        _("Action"),
+        _("Actions"),
         max_length=255,
         null=True,
         blank=True,
-        help_text=_("Custom form action; don't fill this field, unless really "
-                    "necessary.")
+        help_text=_("Ne pas remplir si pas d'action nécessaires")
     )
     created = models.DateTimeField(
         _("Created"),
