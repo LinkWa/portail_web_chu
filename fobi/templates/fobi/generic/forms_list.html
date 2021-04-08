@@ -17,14 +17,14 @@
                   {% if show_edit_link %}
                   <li>
                       <a href="{% url 'fobi.edit_form_entry' form_entry.pk %}">
-                          <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+                          <span class="glyphicon glyphicon-edit"></span> {% trans "Edition" %}
                       </a>
                   </li>
                   {% endif %}
                   {% if show_delete_link %}
                   <li>
                       <a href="{% url 'fobi.delete_form_entry' form_entry.pk %}">
-                          <span class="glyphicon glyphicon-remove"></span> {% trans "Delete" %}
+                          <span class="glyphicon glyphicon-remove"></span> {% trans "Suppression" %}
                       </a>
                   </li>
                   {% endif %}
