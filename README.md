@@ -32,8 +32,6 @@ Portail Web pour la recherche : CHU de Limoges
 
    `pip install fpdf2`
 
-6. formtools : Utilitaire pour les formulaires
-
-   `pip install django-formtools`
+~~6. formtools : Utilitaire pour les formulaires~~
 
 ~~7. Fobi : Creationd de formulaire~~
