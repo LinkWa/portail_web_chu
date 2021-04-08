@@ -11,26 +11,27 @@ Portail Web pour la recherche : CHU de Limoges
 * Nzumgueng Toche Samson Thibaut
 
 ---------------------------------------------
+Pour installer les packages : `pip install requirements.txt`
+
+Pour que le projet fonctionne, il faut lancer le serveur de base de donnée avec la commande `mongod`
+
+Adresse du serveur : http://127.0.0.1:8000/
+
+Nom de la base de données : *portail_web_chu_db*
+
+---------------------------------------------
 
 ## Paquets installés :
 
 1. Django : Framework Web
 
-   `pip install Django`
-
 2. Django-crispy-forms : Mise en forme automatique des formulaires
 
-   `pip install django-crispy-forms`
-
 3. Djongo : Connection entre Django et la BDD MongoDB
-
-   `pip install djongo`
 
 ~~4. Prefect : Moteur de workflow~~
 
 5. fpdf2 : Générateur de pdf
-
-   `pip install fpdf2`
 
 ~~6. formtools : Utilitaire pour les formulaires~~
 
