@@ -7,10 +7,10 @@
     <div class="col-9 col-sm-12 col-lg-9">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="#tab-form-elements" role="tab" data-toggle="tab">{% trans "Elements" %}</a></li>
-            <li><a href="#tab-form-handlers" role="tab" data-toggle="tab">{% trans "Handlers" %}</a></li>
-            <li><a href="#tab-form-properties" role="tab" data-toggle="tab">{% trans "Properties" %}</a></li>
-            <li><a href="#tab-form-service" role="tab" data-toggle="tab">{% trans "Service" %}</a></li>
+            <li><a class="btn btn-primary" href="#tab-form-elements" role="tab" data-toggle="tab"> Champs</a></li>
+            <li><a class="btn btn-primary" href="#tab-form-handlers" role="tab" data-toggle="tab"> Gestionnaires </a></li>
+            <li><a class="btn btn-primary" href="#tab-form-properties" role="tab" data-toggle="tab"> Propriété du formulaire </a></li>
+            <!-- <li><a href="#tab-form-service" role="tab" data-toggle="tab"> Service </a></li>-->
         </ul>
 
         <!-- Tab panes -->
@@ -20,7 +20,7 @@
             <div class="tab-pane active" id="tab-form-elements">
 
                 <div>
-                    <h2 id="form_elements">Ajouter un champ au formulaire </h2>
+                    <h2 id="form_elements">Page d'ajout un champ au formulaire </h2>
                 </div>
 
                 <div class="panel panel-default">
@@ -29,7 +29,7 @@
                             <div class="dropdown">
                                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown link
+                                    Selecteur de champ
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -70,7 +70,7 @@
                                 <div class="{% block form_elements_button_wrapper_html_class %}controls{% endblock %}">
                                     <input type="submit" name="ordering"
                                            class="{% block form_elements_button_html_class %}btn btn-primary pull-right{% endblock %}"
-                                           value="{% trans 'Save ordering' %}"/>
+                                           value="Sauvegarde de l'ajout des champs"/>
                                 </div>
                             </div>
                         </form>
@@ -83,15 +83,16 @@
             <div class="tab-pane" id="tab-form-handlers">
 
                 <div>
-                    <h2 id="form_handlers">{% trans "Add handlers to your form" %}</h2>
+                    <h2 id="form_handlers"> Page d'ajout de gestionnaire</h2>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <ul class="nav pull-right">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                    {% trans "Choose form handler to add" %} <span class="caret"></span>
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                   id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Selecteur de gestionnaire
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for form_handler_uid, form_handler_name in user_form_handler_plugins %}
@@ -106,7 +107,7 @@
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                {% trans "Choose form handler to add" %} <span class="caret"></span>
+                                {% trans "Selecteur de gestionnaire" %} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 {% for form_handler_uid, form_handler_name in user_form_handler_plugins %}
@@ -124,7 +125,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>{% trans "Handler" %}</th>
+                                    <th>{% trans "Gestionnaire" %}</th>
                                     {#<th>{% trans "Settings" %}</th>#}
                                     <th>{% trans "Actions" %}</th>
                                 </tr>
@@ -142,6 +143,7 @@
 
 
 
+
                                                                 {% spaceless %}{{ plugin.plugin_data_repr|safe }}{% endspaceless %}"
                                                            role="button">
                                                             <span class="badge" title="{% trans 'Info' %}">?</span>
@@ -153,12 +155,12 @@
                                                         {% if form_handler.plugin_data %}
                                                             <li>
                                                                 <a href="{% url 'fobi.edit_form_handler_entry' form_handler.pk %}"><span
-                                                                        class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+                                                                        class="glyphicon glyphicon-edit"></span> Edition du champ
                                                                 </a></li>
                                                         {% endif %}
                                                         <li>
                                                             <a href="{% url 'fobi.delete_form_handler_entry' form_handler.pk %}"><span
-                                                                    class="glyphicon glyphicon-remove"></span> {% trans "Delete" %}
+                                                                    class="glyphicon glyphicon-remove"></span> Suppression du champ
                                                             </a></li>
                                                         {% get_fobi_form_handler_plugin_custom_actions plugin form_entry as form_handler_plugin_custom_actions %}
                                                         {#% for action in plugin.get_custom_actions %#}
@@ -185,7 +187,7 @@
             <div class="tab-pane" id="tab-form-properties">
 
                 <div>
-                    <h2 id="form_properties">{% trans "Form properties" %}</h2>
+                    <h2 id="form_properties">Propriété du formulaire</h2>
                 </div>
 
                 <div class="panel panel-default">
@@ -200,7 +202,7 @@
                                 <div class="{% block form_properties_button_wrapper_html_class %}controls{% endblock %}">
                                     <input type="submit"
                                            class="{% block form_properties_button_html_class %}btn btn-primary pull-right{% endblock %}"
-                                           value="{% trans 'Submit changes' %}"/>
+                                           value="Sauvegarde des propriétés"/>
                                 </div>
                             </div>
                         </form>
