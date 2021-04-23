@@ -11,7 +11,7 @@ Portail Web pour la recherche : CHU de Limoges
 * Nzumgueng Toche Samson Thibaut
 
 ---------------------------------------------
-Pour installer les packages : `pip install requirements.txt`
+Pour installer les packages : `pip install -r requirements.txt`
 
 Pour que le projet fonctionne, il faut lancer le serveur de base de donnée avec la commande `mongod`
 
